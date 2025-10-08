@@ -3,6 +3,9 @@
 
 import { useState, useRef } from 'react';
 import { generateQuestionPaper } from './actions';
+import { Document, Packer, Paragraph } from 'docx';
+import { saveAs } from 'file-saver';
+import jsPDF from 'jspdf';
 
 export default function TeacherHelperPage() {
   const [format, setFormat] = useState('');
@@ -44,6 +47,28 @@ export default function TeacherHelperPage() {
     }
   };
 
+  const handleExportDoc = () => {
+    const doc = new Document({
+      sections: [
+        {
+          children: [
+            new Paragraph(questionPaper),
+          ],
+        },
+      ],
+    });
+
+    Packer.toBlob(doc).then((blob) => {
+      saveAs(blob, 'question-paper.docx');
+    });
+  };
+
+  const handleExportPdf = () => {
+    const doc = new jsPDF();
+    doc.text(questionPaper, 10, 10);
+    doc.save('question-paper.pdf');
+  };
+
   return (
     <div className="container">
       <header className="header">
@@ -53,19 +78,17 @@ export default function TeacherHelperPage() {
       <main className="main" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <form onSubmit={handleSubmit} className="form-container">
           <div className="form-group">
-            <label htmlFor="format">Format Specification</label>
+            <label htmlFor="format">Format Specification (Optional)</label>
             <textarea
               id="format"
               value={format}
               onChange={(e) => setFormat(e.target.value)}
               placeholder="e.g., 5 true/false questions, 5 match the following, 5 brief questions worth 5 marks each"
-              required
             />
           </div>
           <div className="form-group">
             <label htmlFor="reference-file">Reference Integration (Optional)</label>
-            <input type="file" id="refe
-            rence-file" ref={referenceFileRef} />
+            <input type="file" id="reference-file" ref={referenceFileRef} />
             <p className="file-info">Upload a previous year's paper for format and style matching.</p>
           </div>
           <div className="form-group">
@@ -98,6 +121,10 @@ export default function TeacherHelperPage() {
           <div className="result-container">
             <h2>Generated Question Paper & Answer Key</h2>
             <pre className="result-box">{questionPaper}</pre>
+            <div className="export-btn-group">
+              <button onClick={handleExportDoc} className="submit-btn" style={{marginRight: '1rem' }}>Export as DOC</button>
+              <button onClick={handleExportPdf} className="submit-btn">Export as PDF</button>
+            </div>
           </div>
         )}
 
