@@ -82,6 +82,7 @@ The content should be engaging, informative, and easy to understand. Please prov
     let chapter;
     if (jsonStringMatch && jsonStringMatch[1]) {
         chapter = JSON.parse(jsonStringMatch[1]);
+        console.log(chapter)
     } else {
         chapter = JSON.parse(responseText);
     }
@@ -95,7 +96,7 @@ The content should be engaging, informative, and easy to understand. Please prov
 
 export async function evaluateTheoryQuestion(userAnswer: string, correctAnswer: string) {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-001' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
   const prompt = `You are an expert evaluator. A student was asked the following question:
   
@@ -142,7 +143,7 @@ interface QuizResult {
 
 export async function generateQuizFeedback(results: QuizResult[]) {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-001' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
   const score = results.filter(r => r.isCorrect || r.evaluation?.evaluation === 'correct').length;
   const total = results.length;

@@ -143,10 +143,11 @@ export default function StudentLearningCreatorPage() {
   };
 
   return (
-    <div className="container">
-      <header className="header">
-        <a href="/" style={{ textDecoration: 'none', color: 'inherit', alignSelf: 'flex-start' }}>&larr; Back to Home</a>
-        <h1>Student Dynamic Learning Chapter Creator</h1>
+    <div className="bg-gray-100 min-h-screen">
+      <header className="bg-google-yellow text-white flex items-center justify-between p-4">
+        <a href="/" className="text-xl font-bold"> &larr; Back to Home</a>
+        <h1 className="text-2xl font-bold">Student Dynamic Learning Chapter Creator</h1>
+        <div></div>
       </header>
       <main className="main" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {!chapter && (
