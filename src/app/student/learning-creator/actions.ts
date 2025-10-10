@@ -23,9 +23,15 @@ export async function generateChapter(formData: FormData) {
   const learningStyle = formData.get('learning-style') as string;
   const file = formData.get('file') as File | null;
 
-  const promptText = `You are an AI assistant designed to create personalized learning experiences. Your task is to convert a given topic into an interactive learning chapter.
+  const promptText = `You are an AI assistant designed to create personalized learning experiences. Your task is to convert a given topic into an interactive, text-based learning chapter.
 
-Analyze the topic of "${topic}" and generate a learning chapter tailored for a "${learningStyle}" learning style.
+Analyze the topic of "${topic}" and generate a learning chapter.
+
+The chapter's content should be adapted for a "${learningStyle}" learning style, but the entire output must be text-only. Here is how to adapt your writing style:
+- For a "Visual" style: Use vivid descriptions, structured timelines (using text), analogies, and well-organized bullet points. Do NOT describe images; instead, create textual content that helps a user visualize the topic.
+- For an "Auditory" style: Use a conversational, engaging tone, ask rhetorical questions, and structure content as if it were a script or podcast segment.
+- For a "Kinesthetic" style: Use action-oriented language, provide real-world examples, and present step-by-step processes or case studies.
+- For a "Reading/Writing" style: Use clear definitions, detailed explanations, and a formal, well-structured format.
 
 If a file is provided, use its content as the primary source material.
 
@@ -36,7 +42,7 @@ The output must be a single JSON object with the following structure:
     {
       "id": "1",
       "front": "A short title, keyword, or question for the front of the flashcard.",
-      "back": "The detailed definition or answer for the back of the flashcard."
+      "back": "The detailed definition or answer for the back of the flashcard. This must be text."
     }
   ],
   "questions": [
@@ -44,26 +50,20 @@ The output must be a single JSON object with the following structure:
       "id": "1",
       "type": "multiple-choice",
       "question": "A question to test understanding, based to some extent on the flashcards.",
-      "options": [
-        "Option A",
-        "Option B",
-        "Option C",
-        "Option D"
-      ],
+      "options": [ "Option A", "Option B", "Option C", "Option D" ],
       "answer": "The correct option."
     },
     {
       "id": "2",
       "type": "theory",
       "question": "A theoretical question to assess deeper understanding.",
-      "answer": "A detailed answer for the theory question."
+      "answer": "A detailed, text-based answer for the theory question."
     }
   ]
 }
 
 The flashcards should cover the key concepts, definitions, and formulas of the topic.
 The questions should be a mix of multiple-choice and theory questions to assess understanding at different levels.
-For theory questions, provide a detailed answer that can be used for semantic matching evaluation.
 The content should be engaging, informative, and easy to understand. Please provide the output in a single JSON block.`;
 
     const promptParts: Part[] = [
@@ -155,16 +155,20 @@ export async function generateQuizFeedback(results: QuizResult[]) {
   Your task is to provide a comprehensive and clear summary for the student. The summary should include:
   1. The final score (e.g., "You scored ${score} out of ${total}").
   2. A "Key Takeaways" section that praises them for correct answers and provides constructive feedback for incorrect ones.
-  3. A "Detailed Review" section. For each incorrect or partially-correct answer, explain the concept again clearly and concisely. 
+  3. A "Detailed Review" section. For each incorrect or partially-correct answer, explain the concept again clearly and concisely.
+  4. If the answer was correct, briefly praise the user and add an interesting fact or deeper insight related to the topic.
 
   Format the output as a single JSON object with this structure:
   {
-    "scoreText": "Your score summary.",
+    "score": ${score},
+    "total": ${total},
+    "scoreText": "Your score summary text, e.g., 'You scored ${score} out of ${total}'.",
     "keyTakeaways": "A summary of performance.",
     "detailedReview": [
       {
         "question": "The original question.",
         "yourAnswer": "The user's answer.",
+        "isCorrect": true,
         "feedback": "The detailed explanation for this specific question."
       }
     ]

@@ -23,6 +23,7 @@
     "next": "15.5.4",
     "pdf-parse": "^2.2.2",
     "react": "19.1.0",
+    "react-confetti": "^6.4.0",
     "react-dom": "19.1.0",
     "react-speech-recognition": "^4.0.1",
     "tailwindcss-animate": "^1.0.7"

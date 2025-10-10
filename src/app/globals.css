@@ -256,3 +256,48 @@ body {
   color: white;
   transform: rotateY(180deg);
 }
+
+/* Add this to the end of your globals.css */
+
+@keyframes glowing-border {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.glow-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.glow-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 1.5rem; /* Match card's border-radius */
+  border: 2px solid transparent;
+  background: linear-gradient(90deg, #e73c7e, #23a6d5, #ee7752, #e73c7e) border-box;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  background-size: 400% 400%;
+}
+
+.glow-card:hover::before {
+  opacity: 1;
+  animation: glowing-border 8s ease infinite;
+}
