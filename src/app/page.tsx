@@ -1,33 +1,86 @@
 
-import { BookOpenIcon } from "@/components/BookOpenIcon";
-import { DocumentIcon } from "@/components/DocumentIcon";
-import { MicIcon } from "@/components/MicIcon";
+'use client';
 
-export default function HomePage() {
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+export default function LoginPage() {
+  const [studentEmail, setStudentEmail] = useState('');
+  const [teacherEmail, setTeacherEmail] = useState('');
+  const router = useRouter();
+
+  const handleStudentLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // No auth for now, just redirect
+    router.push('/student/dashboard');
+  };
+
+  const handleTeacherLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // No auth for now, just redirect
+    router.push('/teacher/dashboard');
+  };
+
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <header className="bg-google-blue text-white text-center py-8">
-        <h1 className="text-4xl font-bold">Teacher & Student AI Tools</h1>
-      </header>
-      <main className="container mx-auto py-12 px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <a href="/teacher-helper" className="bg-white rounded-lg shadow-lg p-8 flex flex-col items-center text-center hover:bg-gray-200 transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <DocumentIcon className="h-16 w-16 text-google-red mb-4" />
-            <h2 className="text-2xl font-bold text-google-red mb-2">Teacher Helper Question Paper Generator</h2>
-            <p className="text-gray-600">Generate question papers for any subject and any grade in minutes.</p>
-          </a>
-          <a href="/student-learning-creator" className="bg-white rounded-lg shadow-lg p-8 flex flex-col items-center text-center hover:bg-gray-200 transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <BookOpenIcon className="h-16 w-16 text-google-yellow mb-4" />
-            <h2 className="text-2xl font-bold text-google-yellow mb-2">Student Dynamic Learning Chapter Creator</h2>
-            <p className="text-gray-600">Create personalized learning chapters tailored to your needs.</p>
-          </a>
-          <a href="/learning-support-agent" className="bg-white rounded-lg shadow-lg p-8 flex flex-col items-center text-center hover:bg-gray-200 transition-colors" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <MicIcon className="h-16 w-16 text-google-green mb-4" />
-            <h2 className="text-2xl font-bold text-google-green mb-2">Learning Support Oral Agent</h2>
-            <p className="text-gray-600">Practice your public speaking and presentation skills with an AI agent.</p>
-          </a>
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="w-full max-w-4xl rounded-lg bg-white p-8 shadow-lg md:grid md:grid-cols-2 md:gap-8">
+        <div className="flex flex-col justify-center">
+          <h2 className="mb-4 text-center text-2xl font-bold text-gray-800">Student Login</h2>
+          <form onSubmit={handleStudentLogin}>
+            <div className="mb-4">
+              <label htmlFor="student-email" className="block text-sm font-medium text-gray-700">
+                Email Address
+              </label>
+              <input
+                id="student-email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={studentEmail}
+                onChange={(e) => setStudentEmail(e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div>
+              <button
+                type="submit"
+                className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Login as Student
+              </button>
+            </div>
+          </form>
         </div>
-      </main>
+        <div className="mt-8 flex flex-col justify-center md:mt-0">
+          <h2 className="mb-4 text-center text-2xl font-bold text-gray-800">Teacher Login</h2>
+          <form onSubmit={handleTeacherLogin}>
+            <div className="mb-4">
+              <label htmlFor="teacher-email" className="block text-sm font-medium text-gray-700">
+                Email Address
+              </label>
+              <input
+                id="teacher-email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={teacherEmail}
+                onChange={(e) => setTeacherEmail(e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div>
+              <button
+                type="submit"
+                className="flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              >
+                Login as Teacher
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }

@@ -72,7 +72,7 @@ export default function TeacherHelperPage() {
   return (
     <div className="bg-gray-100 min-h-screen">
       <header className="bg-google-red text-white flex items-center justify-between p-4">
-        <a href="/" className="text-xl font-bold"> &larr; Back to Home</a>
+        <a href="/teacher/dashboard" className="text-xl font-bold"> &larr; Back to Dashboard</a>
         <h1 className="text-2xl font-bold">Teacher Helper Question Paper Generator</h1>
         <div></div>
       </header>

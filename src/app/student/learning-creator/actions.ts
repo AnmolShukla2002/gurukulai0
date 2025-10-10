@@ -16,8 +16,8 @@ async function fileToGenerativePart(file: File): Promise<Part> {
 }
 
 export async function generateChapter(formData: FormData) {
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string);
+  const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL as string });
 
   const topic = formData.get('topic') as string;
   const learningStyle = formData.get('learning-style') as string;
@@ -75,7 +75,7 @@ The content should be engaging, informative, and easy to understand. Please prov
     }
 
   try {
-    const result = await model.generateContent(promptParts);
+    const result = await model.generateContent({contents: [{role: "user", parts:promptParts}]});
     const responseText = result.response.text();
     
     const jsonStringMatch = responseText.match(/```json\n([\s\S]*?)\n```/);
@@ -95,8 +95,8 @@ The content should be engaging, informative, and easy to understand. Please prov
 }
 
 export async function evaluateTheoryQuestion(userAnswer: string, correctAnswer: string) {
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string);
+  const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL as string });
 
   const prompt = `You are an expert evaluator. A student was asked the following question:
   
@@ -142,8 +142,8 @@ interface QuizResult {
 }
 
 export async function generateQuizFeedback(results: QuizResult[]) {
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string);
+  const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL as string });
 
   const score = results.filter(r => r.isCorrect || r.evaluation?.evaluation === 'correct').length;
   const total = results.length;
@@ -177,7 +177,8 @@ export async function generateQuizFeedback(results: QuizResult[]) {
     const jsonMatch = responseText.match(/```json\n([\s\S]*?)\n```/);
     const feedback = JSON.parse(jsonMatch ? jsonMatch[1] : responseText);
     return { success: true, feedback };
-  } catch (error) {
+  } catch (error)
+ {
     console.error(error);
     return { success: false, error: "Failed to generate final feedback." };
   }

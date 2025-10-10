@@ -113,7 +113,7 @@ export default function LearningSupportAgentPage() {
   return (
     <div className="flex flex-col h-screen bg-gray-100 text-gray-800">
        <header className="bg-google-green text-white flex items-center justify-between p-4">
-        <a href="/" className="text-xl font-bold"> &larr; Back to Home</a>
+        <a href="/student/dashboard" className="text-xl font-bold"> &larr; Back to Dashboard</a>
         <h1 className="text-2xl font-bold">Learning Support Oral Agent</h1>
         <div></div>
       </header>
