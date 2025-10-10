@@ -257,8 +257,6 @@ body {
   transform: rotateY(180deg);
 }
 
-/* Add this to the end of your globals.css */
-
 @keyframes glowing-border {
   0% {
     background-position: 0% 50%;
@@ -300,4 +298,42 @@ body {
 .glow-card:hover::before {
   opacity: 1;
   animation: glowing-border 8s ease infinite;
+}
+
+@keyframes listening-animation {
+  0%, 100% { transform: scaleY(0.2); }
+  50% { transform: scaleY(1); }
+}
+
+.voice-bar {
+  animation: listening-animation 1.2s ease-in-out infinite;
+}
+
+.voice-bar:nth-child(2) { animation-delay: 0.2s; }
+.voice-bar:nth-child(3) { animation-delay: 0.4s; }
+.voice-bar:nth-child(4) { animation-delay: 0.6s; }
+.voice-bar:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes message-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.message-enter {
+    animation: message-in 0.3s ease-out forwards;
+}
+
+.orb-pulse {
+  animation: orb-pulse-animation 2s infinite ease-in-out;
+}
+
+@keyframes orb-pulse-animation {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.05); opacity: 1; }
 }
