@@ -3,18 +3,20 @@ import Link from 'next/link';
 
 const Navbar = () => {
   return (
-    <nav className="bg-gray-800 p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-white text-lg font-bold">
-          AI Learning Tools
-        </Link>
-        <div className="space-x-4">
-          <Link href="/student/dashboard" className="text-gray-300 hover:text-white">
-            Student Dashboard
+    <nav className="bg-white shadow-md">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center py-4">
+          <Link href="/" className="text-2xl font-bold text-primary">
+            AI Learning Tools
           </Link>
-          <Link href="/teacher/dashboard" className="text-gray-300 hover:text-white">
-            Teacher Dashboard
-          </Link>
+          <div className="space-x-6">
+            <Link href="/student/dashboard" className="text-neutral-700 hover:text-primary transition-colors">
+              Student
+            </Link>
+            <Link href="/teacher/dashboard" className="text-neutral-700 hover:text-primary transition-colors">
+              Teacher
+            </Link>
+          </div>
         </div>
       </div>
     </nav>

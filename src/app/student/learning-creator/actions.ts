@@ -35,7 +35,8 @@ The output must be a single JSON object with the following structure:
   "flashcards": [
     {
       "id": "1",
-      "content": "Key concept or definition related to the topic."
+      "front": "A short title, keyword, or question for the front of the flashcard.",
+      "back": "The detailed definition or answer for the back of the flashcard."
     }
   ],
   "questions": [
@@ -82,7 +83,6 @@ The content should be engaging, informative, and easy to understand. Please prov
     let chapter;
     if (jsonStringMatch && jsonStringMatch[1]) {
         chapter = JSON.parse(jsonStringMatch[1]);
-        console.log(chapter)
     } else {
         chapter = JSON.parse(responseText);
     }

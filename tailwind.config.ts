@@ -10,10 +10,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'google-blue': '#4285F4',
-        'google-red': '#DB4437',
-        'google-yellow': '#F4B400',
-        'google-green': '#0F9D58',
+        'primary': '#4A90E2',
+        'secondary': '#50E3C2',
+        'accent': '#F5A623',
+        'neutral-100': '#F8F9FA',
+        'neutral-200': '#E9ECEF',
+        'neutral-500': '#868E96',
+        'neutral-700': '#495057',
+        'neutral-900': '#212529',
+        'success': '#28a745',
+        'warning': '#ffc107',
+        'error': '#dc3545',
       },
     },
   },

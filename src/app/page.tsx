@@ -11,24 +11,22 @@ export default function LoginPage() {
 
   const handleStudentLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // No auth for now, just redirect
     router.push('/student/dashboard');
   };
 
   const handleTeacherLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // No auth for now, just redirect
     router.push('/teacher/dashboard');
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-4xl rounded-lg bg-white p-8 shadow-lg md:grid md:grid-cols-2 md:gap-8">
+    <div className="flex min-h-screen items-center justify-center bg-neutral-100 p-4">
+      <div className="w-full max-w-4xl rounded-2xl bg-white p-8 shadow-xl md:grid md:grid-cols-2 md:gap-12">
         <div className="flex flex-col justify-center">
-          <h2 className="mb-4 text-center text-2xl font-bold text-gray-800">Student Login</h2>
+          <h2 className="mb-6 text-center text-3xl font-bold text-neutral-900">Student Login</h2>
           <form onSubmit={handleStudentLogin}>
             <div className="mb-4">
-              <label htmlFor="student-email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="student-email" className="block text-sm font-medium text-neutral-700">
                 Email Address
               </label>
               <input
@@ -39,24 +37,24 @@ export default function LoginPage() {
                 required
                 value={studentEmail}
                 onChange={(e) => setStudentEmail(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                className="mt-1 block w-full rounded-lg border-neutral-200 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
               />
             </div>
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="flex w-full justify-center rounded-lg border border-transparent bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >
                 Login as Student
               </button>
             </div>
           </form>
         </div>
-        <div className="mt-8 flex flex-col justify-center md:mt-0">
-          <h2 className="mb-4 text-center text-2xl font-bold text-gray-800">Teacher Login</h2>
+        <div className="mt-8 flex flex-col justify-center border-t border-neutral-200 pt-8 md:mt-0 md:border-t-0 md:border-l md:pl-12">
+          <h2 className="mb-6 text-center text-3xl font-bold text-neutral-900">Teacher Login</h2>
           <form onSubmit={handleTeacherLogin}>
             <div className="mb-4">
-              <label htmlFor="teacher-email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="teacher-email" className="block text-sm font-medium text-neutral-700">
                 Email Address
               </label>
               <input
@@ -67,13 +65,13 @@ export default function LoginPage() {
                 required
                 value={teacherEmail}
                 onChange={(e) => setTeacherEmail(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                className="mt-1 block w-full rounded-lg border-neutral-200 shadow-sm focus:border-secondary focus:ring focus:ring-secondary focus:ring-opacity-50"
               />
             </div>
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                className="flex w-full justify-center rounded-lg border border-transparent bg-secondary px-4 py-3 text-sm font-semibold text-neutral-900 shadow-sm hover:bg-opacity-80 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2"
               >
                 Login as Teacher
               </button>

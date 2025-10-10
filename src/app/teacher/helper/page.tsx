@@ -70,13 +70,13 @@ export default function TeacherHelperPage() {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <header className="bg-google-red text-white flex items-center justify-between p-4">
-        <a href="/teacher/dashboard" className="text-xl font-bold"> &larr; Back to Dashboard</a>
-        <h1 className="text-2xl font-bold">Teacher Helper Question Paper Generator</h1>
+    <div className="bg-neutral-100 min-h-screen">
+      <header className="bg-primary text-white flex items-center justify-between p-4 shadow-md">
+        <a href="/teacher/dashboard" className="text-xl font-bold hover:underline"> &larr; Back to Dashboard</a>
+        <h1 className="text-2xl font-bold">Question Paper Generator</h1>
         <div></div>
       </header>
-      <main className="main" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <main className="main flex flex-col items-center">
         <form onSubmit={handleSubmit} className="form-container">
           <div className="form-group">
             <label htmlFor="format">Format Specification (Optional)</label>
@@ -120,10 +120,10 @@ export default function TeacherHelperPage() {
 
         {questionPaper && (
           <div className="result-container">
-            <h2>Generated Question Paper & Answer Key</h2>
-            <pre className="result-box">{questionPaper}</pre>
-            <div className="export-btn-group">
-              <button onClick={handleExportDoc} className="submit-btn" style={{marginRight: '1rem' }}>Export as DOC</button>
+            <h2 className="text-3xl font-bold mb-4">Generated Question Paper & Answer Key</h2>
+            <pre className="bg-neutral-200 p-4 rounded-lg whitespace-pre-wrap">{questionPaper}</pre>
+            <div className="mt-6 flex space-x-4">
+              <button onClick={handleExportDoc} className="submit-btn">Export as DOC</button>
               <button onClick={handleExportPdf} className="submit-btn">Export as PDF</button>
             </div>
           </div>
@@ -131,8 +131,8 @@ export default function TeacherHelperPage() {
 
         {error && (
           <div className="error-container">
-            <h2>Error</h2>
-            <p className="error-box">{error}</p>
+            <h2 className="text-2xl font-bold mb-2">Error</h2>
+            <p className="text-error">{error}</p>
           </div>
         )}
       </main>

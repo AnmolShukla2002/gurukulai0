@@ -6,7 +6,8 @@ import { generateChapter, evaluateTheoryQuestion, generateQuizFeedback } from '.
 
 interface Flashcard {
   id: string;
-  content: string;
+  front: string;
+  back: string;
 }
 
 interface Question {
@@ -58,6 +59,7 @@ export default function StudentLearningCreatorPage() {
   const [theoryAnswers, setTheoryAnswers] = useState<Record<string, string>>({});
   const [finalFeedback, setFinalFeedback] = useState<FinalFeedback | null>(null);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
 
   const handleGenerationSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,6 +70,7 @@ export default function StudentLearningCreatorPage() {
     setTheoryAnswers({});
     setFinalFeedback(null);
     setQuizSubmitted(false);
+    setFlippedCards({});
 
     const formData = new FormData(e.currentTarget);
     const result = await generateChapter(formData);
@@ -141,15 +144,19 @@ export default function StudentLearningCreatorPage() {
     setQuizLoading(false);
     setQuizSubmitted(true);
   };
+  
+  const handleCardFlip = (cardId: string) => {
+    setFlippedCards(prev => ({ ...prev, [cardId]: !prev[cardId] }));
+  };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <header className="bg-google-yellow text-white flex items-center justify-between p-4">
-        <a href="/student/dashboard" className="text-xl font-bold"> &larr; Back to Dashboard</a>
-        <h1 className="text-2xl font-bold">Student Dynamic Learning Chapter Creator</h1>
+    <div className="bg-neutral-100 min-h-screen">
+      <header className="bg-secondary text-white flex items-center justify-between p-4 shadow-md">
+        <a href="/student/dashboard" className="text-xl font-bold hover:underline"> &larr; Back to Dashboard</a>
+        <h1 className="text-2xl font-bold">Dynamic Learning Chapter Creator</h1>
         <div></div>
       </header>
-      <main className="main" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <main className="main flex flex-col items-center">
         {!chapter && (
             <form onSubmit={handleGenerationSubmit} className="form-container">
               <div className="form-group">
@@ -196,7 +203,7 @@ export default function StudentLearningCreatorPage() {
         {error && (
           <div className="error-container">
             <h2>Error</h2>
-            <p className="error-box">{error}</p>
+            <p className="text-error">{error}</p>
           </div>
         )}
 
@@ -204,27 +211,35 @@ export default function StudentLearningCreatorPage() {
           <div className="result-container">
              {!finalFeedback && (
                 <>
-                    <h2>Generated Chapter</h2>
-                    <div className="flashcards-section">
-                        <h3>Flashcards</h3>
-                        <div className="flashcards-grid">
+                    <h2 className="text-3xl font-bold mb-6 text-center">Generated Chapter</h2>
+                    <div className="mb-12">
+                        <h3 className="text-2xl font-semibold mb-4">Flashcards</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {chapter.flashcards.map(card => (
-                                <div key={card.id} className="flashcard">
-                                    {card.content}
-                                </div>
+                               <div key={card.id} className="flashcard-container" onClick={() => handleCardFlip(card.id)}>
+                               <div className={`flashcard ${flippedCards[card.id] ? 'is-flipped' : ''}`}>
+                                 <div className="flashcard-front">
+                                   <p>{card.front}</p>
+                                   <small className="text-neutral-500">Click to flip</small>
+                                 </div>
+                                 <div className="flashcard-back">
+                                   <p>{card.back}</p>
+                                 </div>
+                               </div>
+                             </div>
                             ))}
                         </div>
                     </div>
-                    <div className="quiz-section">
-                        <h3>Quiz</h3>
-                        <form onSubmit={handleQuizSubmit}>
+                    <div>
+                        <h3 className="text-2xl font-semibold mb-4 text-center">Quiz</h3>
+                        <form onSubmit={handleQuizSubmit} className="space-y-8">
                             {chapter.questions.map(question => (
-                                <div key={question.id} className="question-block">
-                                    <p className="question-text">{question.question}</p>
+                                <div key={question.id} className="p-6 bg-white rounded-xl shadow-md">
+                                    <p className="font-semibold text-lg mb-4">{question.question}</p>
                                     {question.type === 'multiple-choice' && question.options && (
-                                        <div className="options-group">
+                                        <div className="space-y-3">
                                             {question.options.map(option => (
-                                                <label key={option} className="option-label">
+                                                <label key={option} className="flex items-center p-3 rounded-lg hover:bg-neutral-200 transition-colors">
                                                     <input
                                                         type="radio"
                                                         name={question.id}
@@ -232,6 +247,7 @@ export default function StudentLearningCreatorPage() {
                                                         onChange={() => handleMultipleChoiceChange(question.id, option)}
                                                         checked={selectedAnswers[question.id] === option}
                                                         disabled={quizSubmitted}
+                                                        className="mr-3"
                                                     />
                                                     {option}
                                                 </label>
@@ -240,11 +256,11 @@ export default function StudentLearningCreatorPage() {
                                     )}
                                     {question.type === 'theory' && (
                                         <textarea
-                                            className="theory-textarea"
                                             value={theoryAnswers[question.id] || ''}
                                             onChange={(e) => handleTheoryChange(question.id, e.target.value)}
                                             placeholder="Your answer..."
                                             disabled={quizSubmitted}
+                                            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary"
                                         />
                                     )}
                                 </div>
@@ -264,78 +280,30 @@ export default function StudentLearningCreatorPage() {
             )}
 
             {finalFeedback && (
-                <div className="feedback-section">
-                    <h2>Quiz Results</h2>
-                    <h3>{finalFeedback.scoreText}</h3>
-                    <div className="feedback-block">
-                        <h4>Key Takeaways</h4>
-                        <p>{finalFeedback.keyTakeaways}</p>
-                    </div>
-                    <div className="feedback-block">
-                        <h4>Detailed Review</h4>
-                        {finalFeedback.detailedReview.map((review, index) => (
-                            <div key={index} className="review-item">
-                                <p><strong>Question:</strong> {review.question}</p>
-                                <p><strong>Your Answer:</strong> {review.yourAnswer}</p>
-                                <p><strong>Feedback:</strong> {review.feedback}</p>
-                            </div>
-                        ))}
+                <div className="mt-8">
+                    <h2 className="text-3xl font-bold mb-4 text-center">Quiz Results</h2>
+                    <div className="bg-white p-6 rounded-xl shadow-md">
+                      <h3 className="text-2xl font-semibold mb-4 text-center">{finalFeedback.scoreText}</h3>
+                      <div className="mb-6">
+                          <h4 className="text-xl font-semibold">Key Takeaways</h4>
+                          <p className="text-neutral-700 mt-2">{finalFeedback.keyTakeaways}</p>
+                      </div>
+                      <div>
+                          <h4 className="text-xl font-semibold">Detailed Review</h4>
+                          {finalFeedback.detailedReview.map((review, index) => (
+                              <div key={index} className="p-4 border-t border-neutral-200 mt-4">
+                                  <p className="font-semibold">Question: {review.question}</p>
+                                  <p className="text-neutral-700">Your Answer: {review.yourAnswer}</p>
+                                  <p className="text-primary">Feedback: {review.feedback}</p>
+                              </div>
+                          ))}
+                      </div>
                     </div>
                 </div>
             )}
           </div>
         )}
       </main>
-       <style jsx>{`
-        .flashcards-section, .quiz-section, .feedback-section {
-          width: 100%;
-          margin-top: 2rem;
-        }
-        .flashcards-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-          gap: 1rem;
-        }
-        .flashcard {
-          background-color: #f0f0f0;
-          border: 1px solid #ddd;
-          border-radius: 8px;
-          padding: 1rem;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .question-block {
-          margin-bottom: 1.5rem;
-          padding: 1rem;
-          border: 1px solid #eee;
-          border-radius: 8px;
-        }
-        .question-text {
-          font-weight: bold;
-        }
-        .options-group {
-          display: flex;
-          flex-direction: column;
-        }
-        .option-label {
-          margin: 0.25rem 0;
-        }
-        .theory-textarea {
-          width: 100%;
-          min-height: 100px;
-          padding: 0.5rem;
-          border-radius: 4px;
-          border: 1px solid #ccc;
-        }
-        .feedback-block {
-            margin-bottom: 2rem;
-        }
-        .review-item {
-            padding: 1rem;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-      `}</style>
     </div>
   );
 }
