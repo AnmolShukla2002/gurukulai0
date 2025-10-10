@@ -1,8 +1,8 @@
-
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { AnimatedEmailInput } from '@/components/AnimatedEmailInput';
 
 export default function LoginPage() {
   const [studentEmail, setStudentEmail] = useState('');
@@ -20,24 +20,21 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-100 p-4">
+    <div className="flex min-h-screen items-center justify-center animated-gradient p-4">
       <div className="w-full max-w-4xl rounded-2xl bg-white p-8 shadow-xl md:grid md:grid-cols-2 md:gap-12">
         <div className="flex flex-col justify-center">
           <h2 className="mb-6 text-center text-3xl font-bold text-neutral-900">Student Login</h2>
           <form onSubmit={handleStudentLogin}>
             <div className="mb-4">
-              <label htmlFor="student-email" className="block text-sm font-medium text-neutral-700">
+              <label htmlFor="student-email" className="sr-only">
                 Email Address
               </label>
-              <input
+              <AnimatedEmailInput
                 id="student-email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
                 value={studentEmail}
                 onChange={(e) => setStudentEmail(e.target.value)}
-                className="mt-1 block w-full rounded-lg border-neutral-200 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                placeholder="Enter your email"
+                focusColorClass="focus:border-primary focus:ring-primary"
               />
             </div>
             <div>
@@ -54,18 +51,15 @@ export default function LoginPage() {
           <h2 className="mb-6 text-center text-3xl font-bold text-neutral-900">Teacher Login</h2>
           <form onSubmit={handleTeacherLogin}>
             <div className="mb-4">
-              <label htmlFor="teacher-email" className="block text-sm font-medium text-neutral-700">
+              <label htmlFor="teacher-email" className="sr-only">
                 Email Address
               </label>
-              <input
+              <AnimatedEmailInput
                 id="teacher-email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
                 value={teacherEmail}
                 onChange={(e) => setTeacherEmail(e.target.value)}
-                className="mt-1 block w-full rounded-lg border-neutral-200 shadow-sm focus:border-secondary focus:ring focus:ring-secondary focus:ring-opacity-50"
+                placeholder="Enter your email"
+                focusColorClass="focus:border-secondary focus:ring-secondary"
               />
             </div>
             <div>
