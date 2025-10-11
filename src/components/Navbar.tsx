@@ -7,7 +7,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           <Link href="/" className="text-2xl font-bold text-primary">
-            AI Learning Tools
+            Gurukul AI
           </Link>
           <div className="space-x-6">
             <Link href="/student/dashboard" className="text-neutral-700 hover:text-primary transition-colors">

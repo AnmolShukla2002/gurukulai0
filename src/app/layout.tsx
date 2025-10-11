@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'AI Learning Tools',
+  title: 'Gurukul AI',
   description: 'AI-powered tools for teachers and students',
 };
 
