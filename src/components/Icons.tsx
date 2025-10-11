@@ -97,3 +97,46 @@ export const TrophyIcon = (props: IconProps) => (
     <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
   </svg>
 );
+
+export const DocumentIcon = (props: IconProps) => (
+  <svg {...defaultProps} {...props}>
+    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+    <polyline points="14 2 14 8 20 8" />
+  </svg>
+);
+
+export const WandIcon = (props: IconProps) => (
+  <svg {...defaultProps} {...props}>
+    <path d="M15 4V2" />
+    <path d="M15 16v-2" />
+    <path d="M8 9h2" />
+    <path d="M20 9h2" />
+    <path d="M17.8 11.8 19 13" />
+    <path d="M5 13l1.2-1.8" />
+    <path d="M19 7l-1.2 1.2" />
+    <path d="M6.2 8.2 5 7" />
+    <path d="M9 4h1" />
+    <path d="M9 16H8" />
+    <path d="M4 9v1" />
+    <path d="M16 9v1" />
+    <path d="M21 12v-1" />
+    <path d="M3 12v-1" />
+    <path d="M12 21v-1l2-2 2-2-4-4-4 4 2 2 2 2z" />
+  </svg>
+);
+
+export const FileTextIcon = (props: IconProps) => (
+  <svg {...defaultProps} {...props}>
+    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+    <polyline points="14 2 14 8 20 8" />
+    <line x1="16" y1="13" x2="8" y2="13" />
+    <line x1="16" y1="17" x2="8" y2="17" />
+    <line x1="10" y1="9" x2="8" y2="9" />
+  </svg>
+);
+
+export const SparklesIcon = (props: IconProps) => (
+    <svg {...defaultProps} {...props}>
+        <path d="m12 3-1.9 5.8-5.8 1.9 5.8 1.9 1.9 5.8 1.9-5.8 5.8-1.9-5.8-1.9z"/>
+    </svg>
+);
