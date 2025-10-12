@@ -31,9 +31,30 @@ export default function PresentationCoachPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [error, setError] = useState('');
   const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+
+  // Function to speak text using browser's TTS
+  const speak = (text: string, onEnd?: () => void) => {
+    if (speechSynthesis.speaking) speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      onEnd?.();
+    };
+    speechSynthesis.speak(utterance);
+  };
+
+  useEffect(() => {
+    if (quizState === 'asking' && quizData.length > 0) {
+      const questionToAsk = quizData[currentQuestionIndex].spokenQuestion;
+      speak(questionToAsk);
+    }
+  }, [quizState, currentQuestionIndex, quizData]);
+
 
   const handleFileSubmit = async (formData: FormData) => {
     setError('');
@@ -78,7 +99,6 @@ export default function PresentationCoachPage() {
                     setQuizState('feedback');
                 } else {
                     setError(result.error || "Sorry, I had trouble evaluating your answer.");
-                    // Move to next question even if evaluation fails
                     goToNextQuestion();
                 }
             };
@@ -178,9 +198,9 @@ export default function PresentationCoachPage() {
                 <h2 className="text-2xl font-bold text-white mb-8">{quizData[currentQuestionIndex]?.question}</h2>
                 
                 {quizState === 'asking' && (
-                    <button onClick={startRecording} className="w-full max-w-xs flex items-center justify-center gap-3 py-3 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-lg hover:bg-green-600 transition-transform hover:scale-105">
+                    <button onClick={startRecording} disabled={isSpeaking} className="w-full max-w-xs flex items-center justify-center gap-3 py-3 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-lg hover:bg-green-600 transition-transform hover:scale-105 disabled:bg-gray-500 disabled:cursor-not-allowed">
                         <MicIcon className="h-6 w-6" />
-                        Start Answering
+                        {isSpeaking ? 'Listen to the question...' : 'Start Answering'}
                     </button>
                 )}
 

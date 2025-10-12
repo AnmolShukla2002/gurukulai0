@@ -14,7 +14,6 @@ async function fileToGenerativePart(file: File) {
 
 export interface QuizQuestion {
   question: string;
-  spokenQuestion: string; // The conversational version for TTS
   answer: string;
 }
 
@@ -24,14 +23,9 @@ export async function generateQuizFromPDF(formData: FormData): Promise<{ success
         if (!file) throw new Error("No file provided.");
 
         const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL as string}); // Using a model that can handle file inputs
 
-        const prompt = `Your tone should be like a friendly, chill teacher. Based on the content of the provided document, create a list of questions and their ideal answers.
-
-        Format the output as a JSON array of objects. Each object must have three keys:
-        1.  "question": The question as it would be written.
-        2.  "spokenQuestion": The same question, but phrased conversationally as if you were speaking it out loud. For example, instead of "What is photosynthesis?", you might say "Alright, let's start with this one: What exactly is photosynthesis?".
-        3.  "answer": The ideal answer to the question.`;
+        const prompt = `Based on the content of this document, create a list of questions and their ideal answers. Format the output as a JSON array of objects, where each object has a "question" and "answer" key.`;
         
         const pdfPart = await fileToGenerativePart(file);
         const result = await model.generateContent([prompt, pdfPart]);
@@ -67,7 +61,7 @@ export async function evaluateAudioAnswer(audioFormData: FormData): Promise<{ su
         }
 
         const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL as string});
 
         const audioPart = await fileToGenerativePart(audioFile);
 
