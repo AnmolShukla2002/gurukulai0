@@ -1,148 +1,6 @@
-
-// 'use client'
-
-// import { useState, useRef } from 'react';
-// import { generateQuestionPaper } from './actions';
-// import { Document, Packer, Paragraph } from 'docx';
-// import { saveAs } from 'file-saver';
-// import jsPDF from 'jspdf';
-
-// export default function TeacherHelperPage() {
-//   const [format, setFormat] = useState('');
-//   const [instructions, setInstructions] = useState('');
-//   const [questionPaper, setQuestionPaper] = useState('');
-//   const [error, setError] = useState('');
-//   const [loading, setLoading] = useState(false);
-
-//   const referenceFileRef = useRef<HTMLInputElement>(null);
-//   const contentFilesRef = useRef<HTMLInputElement>(null);
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setError('');
-//     setQuestionPaper('');
-//     setLoading(true);
-
-//     const formData = new FormData();
-//     formData.append('format', format);
-//     formData.append('instructions', instructions);
-
-//     if (referenceFileRef.current?.files?.[0]) {
-//       formData.append('reference-file', referenceFileRef.current.files[0]);
-//     }
-
-//     if (contentFilesRef.current?.files) {
-//       for (const file of Array.from(contentFilesRef.current.files)) {
-//         formData.append('content-file', file);
-//       }
-//     }
-
-//     const result = await generateQuestionPaper(formData);
-//     setLoading(false);
-
-//     if (result.success) {
-//       setQuestionPaper(result.questionPaper as string);
-//     } else {
-//       setError(result.error as string);
-//     }
-//   };
-
-//   const handleExportDoc = () => {
-//     const doc = new Document({
-//       sections: [
-//         {
-//           children: [
-//             new Paragraph(questionPaper),
-//           ],
-//         },
-//       ],
-//     });
-
-//     Packer.toBlob(doc).then((blob) => {
-//       saveAs(blob, 'question-paper.docx');
-//     });
-//   };
-
-//   const handleExportPdf = () => {
-//     const doc = new jsPDF();
-//     doc.text(questionPaper, 10, 10);
-//     doc.save('question-paper.pdf');
-//   };
-
-//   return (
-//     <div className="bg-neutral-100 min-h-screen">
-//       <header className="bg-primary text-white flex items-center justify-between p-4 shadow-md">
-//         <a href="/teacher/dashboard" className="text-xl font-bold hover:underline"> &larr; Back to Dashboard</a>
-//         <h1 className="text-2xl font-bold">Question Paper Generator</h1>
-//         <div></div>
-//       </header>
-//       <main className="main flex flex-col items-center">
-//         <form onSubmit={handleSubmit} className="form-container">
-//           <div className="form-group">
-//             <label htmlFor="format">Format Specification (Optional)</label>
-//             <textarea
-//               id="format"
-//               value={format}
-//               onChange={(e) => setFormat(e.target.value)}
-//               placeholder="e.g., 5 true/false questions, 5 match the following, 5 brief questions worth 5 marks each"
-//             />
-//           </div>
-//           <div className="form-group">
-//             <label htmlFor="reference-file">Reference Integration (Optional)</label>
-//             <input type="file" id="reference-file" ref={referenceFileRef} />
-//             <p className="file-info">Upload a previous year's paper for format and style matching.</p>
-//           </div>
-//           <div className="form-group">
-//             <label htmlFor="content-file">Content Upload (Optional)</label>
-//             <input type="file" id="content-file" ref={contentFilesRef} multiple />
-//             <p className="file-info">Upload textbooks, study units, or reference materials (PDF, DOCX, PPT).</p>
-//           </div>
-//           <div className="form-group">
-//             <label htmlFor="instructions">Custom Instructions (Optional)</label>
-//             <textarea
-//               id="instructions"
-//               value={instructions}
-//               onChange={(e) => setInstructions(e.target.value)}
-//               placeholder="e.g., Distribute marks portion-wise: 40% from Chapter 1, 35% from Chapter 2, and 25% from Chapter 3. Set question complexity to medium."
-//             />
-//           </div>
-//           <button type="submit" className="submit-btn" disabled={loading}>
-//             {loading ? 'Generating...' : 'Generate'}
-//           </button>
-//         </form>
-
-//         {loading && (
-//           <div className="loading-container">
-//             <div className="loader"></div>
-//             <p>Generating your question paper, please wait...</p>
-//           </div>
-//         )}
-
-//         {questionPaper && (
-//           <div className="result-container">
-//             <h2 className="text-3xl font-bold mb-4">Generated Question Paper & Answer Key</h2>
-//             <pre className="bg-neutral-200 p-4 rounded-lg whitespace-pre-wrap">{questionPaper}</pre>
-//             <div className="mt-6 flex space-x-4">
-//               <button onClick={handleExportDoc} className="submit-btn">Export as DOC</button>
-//               <button onClick={handleExportPdf} className="submit-btn">Export as PDF</button>
-//             </div>
-//           </div>
-//         )}
-
-//         {error && (
-//           <div className="error-container">
-//             <h2 className="text-2xl font-bold mb-2">Error</h2>
-//             <p className="text-error">{error}</p>
-//           </div>
-//         )}
-//       </main>
-//     </div>
-//   );
-// }
-
 'use client'
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { generateQuestionPaper } from './actions';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
 import { saveAs } from 'file-saver';
@@ -157,32 +15,32 @@ export default function TeacherHelperPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const referenceFileRef = useRef<HTMLInputElement>(null);
-  const contentFilesRef = useRef<HTMLInputElement>(null);
-  const [referenceFileName, setReferenceFileName] = useState('');
-  const [contentFileNames, setContentFileNames] = useState<string[]>([]);
+  const [referenceFile, setReferenceFile] = useState<File | null>(null);
+  const [contentFiles, setContentFiles] = useState<File[]>([]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setQuestionPaper('');
-    setLoading(true);
 
     const formData = new FormData();
     formData.append('format', format);
     formData.append('instructions', instructions);
 
-    if (referenceFileRef.current?.files?.[0]) {
-      formData.append('reference-file', referenceFileRef.current.files[0]);
+    if (referenceFile) {
+      formData.append('reference-file', referenceFile);
     }
 
-    if (contentFilesRef.current?.files) {
-      for (const file of Array.from(contentFilesRef.current.files)) {
+    if (contentFiles.length > 0) {
+      for (const file of contentFiles) {
         formData.append('content-file', file);
       }
     }
 
+    setLoading(true);
+    setError('');
+    setQuestionPaper('');
+
     const result = await generateQuestionPaper(formData);
+    
     setLoading(false);
 
     if (result.success && result.questionPaper) {
@@ -253,16 +111,16 @@ export default function TeacherHelperPage() {
                     <FormStep icon={<DocumentIcon className="h-6 w-6"/>} title="Reference Paper (Optional)">
                         <label htmlFor="reference-file" className="flex flex-col items-center justify-center gap-2 w-full p-4 bg-input/50 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary transition-colors">
                             <UploadIcon className="h-8 w-8 text-muted-foreground"/>
-                            <span className="text-sm text-muted-foreground text-center">{referenceFileName || "Upload for style matching"}</span>
+                            <span className="text-sm text-muted-foreground text-center">{referenceFile?.name || "Upload for style matching"}</span>
                         </label>
-                        <input type="file" id="reference-file" ref={referenceFileRef} className="sr-only" onChange={(e) => setReferenceFileName(e.target.files?.[0]?.name || '')}/>
+                        <input type="file" id="reference-file" className="sr-only" onChange={(e) => setReferenceFile(e.target.files?.[0] || null)} />
                     </FormStep>
                     <FormStep icon={<UploadIcon className="h-6 w-6"/>} title="Content Materials (Optional)">
                         <label htmlFor="content-file" className="flex flex-col items-center justify-center gap-2 w-full p-4 bg-input/50 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary transition-colors">
                             <UploadIcon className="h-8 w-8 text-muted-foreground"/>
-                            <span className="text-sm text-muted-foreground text-center">{contentFileNames.length > 0 ? `${contentFileNames.length} file(s) selected` : "Upload textbooks, notes"}</span>
+                            <span className="text-sm text-muted-foreground text-center">{contentFiles.length > 0 ? `${contentFiles.length} file(s) selected` : "Upload textbooks, notes"}</span>
                         </label>
-                        <input type="file" id="content-file" ref={contentFilesRef} multiple className="sr-only" onChange={(e) => setContentFileNames(Array.from(e.target.files || []).map(f => f.name))}/>
+                        <input type="file" id="content-file" multiple className="sr-only" onChange={(e) => setContentFiles(Array.from(e.target.files || []))} />
                     </FormStep>
                 </div>
 
