@@ -27,7 +27,7 @@ export async function generateQuizFromPDF(formData: FormData): Promise<{ success
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
         const prompt = `Your tone should be like a friendly, chill teacher. Based on the content of the provided document, create a list of questions and their ideal answers.
-
+        create max 10 questions
         Format the output as a JSON array of objects. Each object must have three keys:
         1.  "question": The question as it would be written.
         2.  "spokenQuestion": The same question, but phrased conversationally as if you were speaking it out loud. For example, instead of "What is photosynthesis?", you might say "Alright, let's start with this one: What exactly is photosynthesis?".
