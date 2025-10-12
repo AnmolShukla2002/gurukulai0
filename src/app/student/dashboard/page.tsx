@@ -3,60 +3,46 @@ import { MicIcon } from "@/components/MicIcon";
 import Link from "next/link";
 
 export default function StudentDashboard() {
+  const FeatureCard = ({ title, description, href, icon }: { title: string, description: string, href: string, icon: React.ReactNode }) => (
+    <Link href={href}>
+      <div className="block p-8 bg-white/30 backdrop-blur-lg rounded-xl shadow-lg hover:shadow-2xl transform transition-all duration-300 hover:-translate-y-2 h-full">
+        <div className="flex items-center justify-center h-16 w-16 bg-primary rounded-full text-white mb-6 shadow-lg">
+          {icon}
+        </div>
+        <h3 className="text-2xl font-bold text-gray-800 mb-3">{title}</h3>
+        <p className="text-gray-600">{description}</p>
+      </div>
+    </Link>
+  );
+
   return (
-    <div className="min-h-screen w-full animated-gradient">
-      <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-4">
-        <div className="text-center text-white mb-16">
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
-            Welcome Back, Student!
-          </h1>
-          <p className="text-xl mt-4 max-w-2xl mx-auto text-primary-foreground/80">
+    <div className="min-h-screen animated-gradient flex items-center justify-center">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <header className="text-center mb-12">
+          <h1 className="text-5xl font-extrabold text-white tracking-tight">Welcome Back, Student!</h1>
+          <p className="mt-4 text-xl text-white/80 max-w-2xl mx-auto">
             Your personalized AI learning tools are ready. Choose an option
             below to get started.
           </p>
-        </div>
+        </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
-          <Link
-            href="/student/learning-creator"
-            className="group block rounded-3xl p-8 text-center glow-card"
-          >
-            <div className="absolute inset-0 bg-card/60 backdrop-blur-lg rounded-3xl border border-white/20"></div>
-
-            <div className="relative z-10 flex flex-col items-center">
-              <div className="bg-secondary/80 p-4 rounded-full transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 shadow-lg mb-6">
-                <BookOpenIcon className="h-12 w-12 text-secondary-foreground" />
-              </div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">
-                Dynamic Learning Creator
-              </h2>
-              <p className="text-muted-foreground">
-                Create personalized learning chapters tailored to your needs.
-              </p>
-            </div>
-          </Link>
-
-          <Link
-            href="/student/learning-support-agent"
-            className="group block rounded-3xl p-8 text-center glow-card"
-          >
-            <div className="absolute inset-0 bg-card/60 backdrop-blur-lg rounded-3xl border border-white/20"></div>
-
-            <div className="relative z-10 flex flex-col items-center">
-              <div className="bg-accent/80 p-4 rounded-full transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6 shadow-lg mb-6">
-                <MicIcon className="h-12 w-12 text-accent-foreground" />
-              </div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">
-                Learning Support Agent
-              </h2>
-              <p className="text-muted-foreground">
-                Practice public speaking with an AI agent that gives you
-                feedback.
-              </p>
-            </div>
-          </Link>
-        </div>
-      </main>
+        <main>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+            <FeatureCard
+              title="Dynamic Learning Creator"
+              description="Create personalized learning chapters tailored to your needs."
+              href="/student/learning-creator"
+              icon={<BookOpenIcon className="h-8 w-8 text-white" />}
+            />
+            <FeatureCard
+              title="Learning Support Agent"
+              description="Practice public speaking with an AI agent that gives you feedback."
+              href="/student/learning-support-agent"
+              icon={<MicIcon className="h-8 w-8 text-white" />}
+            />
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

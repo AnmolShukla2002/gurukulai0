@@ -141,7 +141,8 @@ export default function PresentationCoachPage() {
   const score = 0; // Score can be re-implemented if needed
 
   return (
-    <div className="flex flex-col h-screen text-foreground font-sans animated-gradient">
+    <div className="flex flex-col h-screen text-foreground font-sans">
+      <div className="animated-gradient absolute inset-0 z-[-1]"></div>
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/10 backdrop-blur-lg border-b border-white/10">
         <div className="container mx-auto flex items-center justify-between p-4">
@@ -177,7 +178,8 @@ export default function PresentationCoachPage() {
           {quizState === 'parsing' && (
             <div className="text-center text-white message-enter">
               <LoaderCircle className="h-12 w-12 animate-spin mx-auto mb-4"/>
-              <h2 className="text-2xl font-bold">Analyzing Document...</h2>
+              <h2 className="text-2xl font-bold">Generating Your Quiz...</h2>
+              <p className="text-white/80">The AI is crafting questions from your document. This may take a moment.</p>
             </div>
           )}
 
