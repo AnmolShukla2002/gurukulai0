@@ -11,31 +11,27 @@ export async function connectToDatabase() {
     // If a connection is already cached, return it
     return { client: cachedClient, db: cachedDb };
   }
-  
+
   if (!uri) {
-    throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
-  }
-  
-  if (!dbName) {
-    throw new Error('Please define the MONGODB_DB environment variable inside .env.local');
+    throw new Error('The MONGODB_URI environment variable is not defined in the deployment environment.');
   }
 
-  // Create a new MongoClient instance with modern options
+  if (!dbName) {
+    throw new Error('The MONGODB_DB environment variable is not defined in the deployment environment.');
+  }
+
   const client = new MongoClient(uri);
 
   try {
-    // Connect the client to the server
     await client.connect();
     console.log("Successfully connected to MongoDB.");
   } catch (e) {
     console.error("Could not connect to MongoDB.", e);
-    // Re-throw the error to be caught by the calling function
     throw e;
   }
 
   const db = client.db(dbName);
 
-  // Cache the connection for future use
   cachedClient = client;
   cachedDb = db;
 
