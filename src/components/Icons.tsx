@@ -161,3 +161,17 @@ export const ThumbsUpIcon = (props: IconProps) => (
         <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a2 2 0 0 1 3 3.88Z" />
     </svg>
 );
+
+export const GeminiIcon = (props: IconProps) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path d="M5.10381 14.7407C3.10223 11.237 4.54223 6.67137 8.04581 4.6698C11.5494 2.66822 16.115 4.10822 18.1166 7.6118C20.1182 11.1154 18.6782 15.681 15.1746 17.6826C11.671 19.6841 7.10538 18.2441 5.10381 14.7407Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M18.8962 9.25925C20.8978 12.7628 19.4578 17.3285 15.9542 19.3301C12.4506 21.3317 7.88502 19.8917 5.88345 16.3881C3.88187 12.8845 5.32187 8.31888 8.82545 6.3173C12.329 4.31573 16.8946 5.75573 18.8962 9.25925Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+export const SendIcon = (props: IconProps) => (
+  <svg {...defaultProps} {...props}>
+    <line x1="22" y1="2" x2="11" y2="13" />
+    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+  </svg>
+);

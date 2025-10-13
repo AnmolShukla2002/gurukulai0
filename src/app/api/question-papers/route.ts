@@ -5,18 +5,19 @@ import { ObjectId } from 'mongodb';
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const classroomId = await searchParams.get('classroomId');
-
-    if (!classroomId) {
-      return NextResponse.json({ success: false, error: 'Classroom ID is required' }, { status: 400 });
-    }
-
-    if (!ObjectId.isValid(classroomId)) {
-      return NextResponse.json({ success: false, error: 'Invalid Classroom ID' }, { status: 400 });
-    }
+    const classroomId = searchParams.get('classroomId');
 
     const { db } = await connectToDatabase();
-    const questionPapers = await db.collection('questionPapers').find({ classroomId: new ObjectId(classroomId) }).toArray();
+    
+    let query = {};
+    if (classroomId) {
+      if (!ObjectId.isValid(classroomId)) {
+        return NextResponse.json({ success: false, error: 'Invalid Classroom ID' }, { status: 400 });
+      }
+      query = { classroomId: new ObjectId(classroomId) };
+    }
+
+    const questionPapers = await db.collection('questionPapers').find(query).toArray();
 
     return NextResponse.json({ success: true, data: questionPapers });
   } catch (error) {
