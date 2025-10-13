@@ -1,25 +1,30 @@
-import type { Metadata } from 'next';
+'use client';
+
+import { useState } from 'react';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
 
 const inter = Inter({ subsets: ['latin'] });
-
-export const metadata: Metadata = {
-  title: 'Gurukul AI',
-  description: 'AI-powered tools for teachers and students',
-};
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
+
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        {children}
+        <Navbar toggleSidebar={toggleSidebar} />
+        <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
+        <main>{children}</main>
       </body>
     </html>
   );

@@ -1,12 +1,12 @@
 'use client'
 
 import Link from 'next/link';
-import { BookOpenCheck, Newspaper } from 'lucide-react';
+import { BookOpenCheck, Newspaper, GitCompareArrows as GitCompareArrowsIcon } from 'lucide-react';
 
 export default function TeacherDashboardPage() {
   const FeatureCard = ({ title, description, href, icon }: { title: string, description: string, href: string, icon: React.ReactNode }) => (
     <Link href={href}>
-      <div className="block p-8 bg-white/30 backdrop-blur-lg rounded-xl shadow-lg hover:shadow-2xl transform transition-all duration-300 hover:-translate-y-2">
+      <div className="block p-8 bg-white/30 backdrop-blur-lg rounded-xl shadow-lg hover:shadow-2xl transform transition-all duration-300 hover:-translate-y-2 h-full">
         <div className="flex items-center justify-center h-16 w-16 bg-primary rounded-full text-white mb-6 shadow-lg">
           {icon}
         </div>
@@ -25,7 +25,7 @@ export default function TeacherDashboardPage() {
         </header>
 
         <main>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
             <FeatureCard
               title="Manage Classrooms"
               description="Create new classrooms, view existing ones, and manage saved question papers within each class."
@@ -37,6 +37,12 @@ export default function TeacherDashboardPage() {
               description="Generate new question papers using the AI assistant and save them to your classrooms."
               href="/teacher/helper"
               icon={<Newspaper size={32} />}
+            />
+            <FeatureCard
+              title="Compare Papers"
+              description="Select two question papers and get an AI-powered comparison of their content and structure."
+              href="/teacher/paper-comparison"
+              icon={<GitCompareArrowsIcon size={32} />}
             />
           </div>
         </main>
