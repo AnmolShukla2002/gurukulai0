@@ -1,0 +1,11 @@
+run:
+  env:
+    - variable: GEMINI_MODEL
+      value: 'gemini-2.0-flash'
+    - variable: MONGODB_DB
+      value: 'db'
+
+    - variable: GOOGLE_API_KEY
+      secret: GOOGLE_API_KEY 
+    - variable: MONGODB_URI
+      secret: MONGODB_URI   
