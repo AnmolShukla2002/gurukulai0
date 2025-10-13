@@ -75,3 +75,28 @@
   background-size: 400% 400%;
   animation: gradient-animation 15s ease infinite;
 }
+
+/* 3D Flashcard Styles */
+.scene {
+  perspective: 1000px;
+}
+
+.flashcard {
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
+  cursor: pointer;
+}
+
+.flashcard.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.card-face-back {
+  transform: rotateY(180deg);
+}

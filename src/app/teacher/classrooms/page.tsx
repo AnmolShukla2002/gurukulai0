@@ -98,30 +98,33 @@ export default function ClassroomsPage() {
 
 
   const ClassroomCard = ({ name, id }: { name: string, id: string }) => (
-    <Card className="flex flex-col justify-between transform transition-transform duration-300 hover:scale-105 hover:shadow-xl bg-white/50">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <BookOpenIcon className="h-6 w-6 text-primary" />
-          <span className="truncate">{name}</span>
-        </CardTitle>
-        <CardDescription>Classroom</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Link href={`/teacher/classrooms/${id}`}>
-           <Button variant="outline" className="w-full">View Details</Button>
-        </Link>
-      </CardContent>
-      <CardFooter className="flex justify-end gap-2">
-        <Button variant="outline" size="sm" disabled>
-          <PencilIcon className="h-4 w-4 mr-2" />
-          Edit
-        </Button>
-        <Button variant="destructive" size="sm" onClick={() => setClassroomToDelete({ _id: id, name })}>
-          <Trash2Icon className="h-4 w-4 mr-2" />
-          Delete
-        </Button>
-      </CardFooter>
-    </Card>
+    <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
+        <div className="absolute inset-0 bg-white/60 backdrop-blur-lg z-10"></div>
+        <div className="relative z-20 p-6 flex flex-col h-full">
+            <div className="flex-grow">
+                <div className="flex items-center justify-center h-16 w-16 bg-primary rounded-full text-white mb-6 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
+                    <BookOpenIcon size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-2 truncate">{name}</h3>
+                <p className="text-gray-600 mb-4">Classroom</p>
+            </div>
+            <div className="mt-auto">
+                <Link href={`/teacher/classrooms/${id}`}>
+                    <Button className="w-full font-semibold">View Details</Button>
+                </Link>
+                <div className="flex justify-end gap-2 mt-4">
+                    <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-800" disabled>
+                        <PencilIcon className="h-4 w-4 mr-1" />
+                        Edit
+                    </Button>
+                    <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-700" onClick={() => setClassroomToDelete({ _id: id, name })}>
+                        <Trash2Icon className="h-4 w-4 mr-1" />
+                        Delete
+                    </Button>
+                </div>
+            </div>
+        </div>
+    </div>
   );
 
   return (
@@ -148,7 +151,7 @@ export default function ClassroomsPage() {
         ) : error ? (
           <div className="text-center text-red-200 bg-red-800/50 p-4 rounded-lg">{error}</div>
         ) : classrooms.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {classrooms.map((classroom) => (
               <ClassroomCard key={classroom._id} name={classroom.name} id={classroom._id} />
             ))}

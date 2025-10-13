@@ -302,25 +302,17 @@ export default function StudentLearningCreatorPage() {
 
             {/* Flashcards View */}
             {activeTab === "flashcards" && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {chapter.flashcards.map((card) => (
-                  <div
-                    key={card.id}
-                    className="flashcard-container"
-                    onClick={() => handleCardFlip(card.id)}
-                  >
-                    <div
-                      className={`flashcard ${
-                        flippedCards[card.id] ? "is-flipped" : ""
-                      }`}
-                    >
-                      <div className="flashcard-front bg-card/60 backdrop-blur-lg border border-white/20 text-card-foreground">
-                        <p>{card.front}</p>
-                        <small className="text-muted-foreground/70 mt-4">
+                  <div className="scene h-64" key={card.id} onClick={() => handleCardFlip(card.id)}>
+                    <div className={`flashcard h-full w-full ${flippedCards[card.id] ? "is-flipped" : ""}`}>
+                      <div className="card-face card-face-front absolute h-full w-full rounded-2xl p-6 flex flex-col justify-center items-center text-center bg-card/60 backdrop-blur-lg border border-white/20 text-card-foreground">
+                        <p className="text-lg font-semibold">{card.front}</p>
+                        <small className="text-muted-foreground/70 mt-4 absolute bottom-4">
                           Click to flip
                         </small>
                       </div>
-                      <div className="flashcard-back bg-secondary/80 backdrop-blur-lg border border-white/20 text-secondary-foreground">
+                      <div className="card-face card-face-back absolute h-full w-full rounded-2xl p-6 flex flex-col justify-center items-center text-center bg-secondary/80 backdrop-blur-lg border border-white/20 text-secondary-foreground">
                         <p>{card.back}</p>
                       </div>
                     </div>

@@ -12,22 +12,17 @@ This project provides AI-powered tools for both teachers and students to enhance
 *   **Learning Support Agent:** A conversational AI to help students with their questions.
 *   **Student and Teacher Dashboards:** Separate dashboards for students and teachers to access their respective tools.
 *   **Teacher Chatbot:** An AI assistant to help teachers find their question papers.
+*   **Paper Comparison Tool:** An AI-powered tool for teachers to compare two question papers.
+*   **Handwritten Answer Sheet Evaluation:** An AI tool to evaluate handwritten student answers.
 
 ## New Features
 
-### 1. Enhanced Chatbot with Classroom Information
+### 1. Student Performance Dashboard (Mock)
 
 **Plan:**
 
-1.  **Update the chatbot's API** at `src/app/api/teacher/chatbot/route.ts` to fetch and include the classroom name with each question paper.
-2.  **Update the `Sidebar.tsx` component** to display the classroom name alongside the paper title.
-
-### 2. Paper Comparison Tool
-
-**Plan:**
-
-1.  **Create a new page** for the comparison tool at `src/app/teacher/paper-comparison/page.tsx`.
-2.  **Create a new API route** at `src/app/api/teacher/paper-comparison/route.ts` to handle the comparison logic.
-3.  **Update the teacher dashboard** to include a link to the new tool.
-4.  **Implement the UI** for selecting two papers and displaying the comparison.
-5.  **Develop the AI-powered comparison logic** in the new API route.
+1.  **Create a new page** for the analytics dashboard at `src/app/teacher/analytics/page.tsx`.
+2.  **Install `recharts`** for data visualization.
+3.  **Create a mock data utility** at `src/lib/mock-data.ts` to generate student and score data for Grade 9 and Grade 10.
+4.  **Implement the UI** with tabs, tables, and charts to display class averages, score distributions, and predictive trends.
+5.  **Update the teacher dashboard** to include a link to the new analytics page.

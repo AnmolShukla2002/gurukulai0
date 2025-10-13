@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       You are an expert at comparing educational documents.
       Please compare the following two question papers and provide a detailed analysis of their similarities and differences.
       Consider the topics covered, the question types, the difficulty level, and the overall structure.
-      Format your response as HTML.
+      Format your response as clean, readable HTML, and do not include the markdown characters \`\`\`html.
 
       **Question Paper 1: ${paper1.title}**
       ${paper1.content}
@@ -38,8 +38,11 @@ export async function POST(req: NextRequest) {
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const comparison = response.text();
+    
+    // Clean the response to remove markdown fences
+    const cleanedComparison = comparison.replace(/```html\n|```/g, '').trim();
 
-    return NextResponse.json({ success: true, comparison });
+    return NextResponse.json({ success: true, comparison: cleanedComparison });
 
   } catch (error) {
     console.error('Paper comparison error:', error);

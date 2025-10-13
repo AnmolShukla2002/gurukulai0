@@ -9,7 +9,7 @@ interface NavbarProps {
 
 const Navbar = ({ toggleSidebar }: NavbarProps) => {
   return (
-    <nav className="bg-white/10 backdrop-blur-lg text-white shadow-md sticky top-0 z-40">
+    <nav className="bg-gray-900/50 backdrop-blur-lg text-white shadow-md sticky top-0 z-40">
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center py-4">
           <Link href="/" className="text-2xl font-bold">

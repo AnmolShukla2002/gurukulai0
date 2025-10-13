@@ -1,48 +1,86 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
-import { BookOpenCheck, Newspaper, GitCompareArrows as GitCompareArrowsIcon } from 'lucide-react';
+import { 
+  BookOpenCheck, 
+  Newspaper, 
+  GitCompareArrows as GitCompareArrowsIcon, 
+  ClipboardCheckIcon, 
+  BarChartIcon,
+  UsersIcon,
+  FilePlus2Icon
+} from 'lucide-react';
 
 export default function TeacherDashboardPage() {
-  const FeatureCard = ({ title, description, href, icon }: { title: string, description: string, href: string, icon: React.ReactNode }) => (
-    <Link href={href}>
-      <div className="block p-8 bg-white/30 backdrop-blur-lg rounded-xl shadow-lg hover:shadow-2xl transform transition-all duration-300 hover:-translate-y-2 h-full">
-        <div className="flex items-center justify-center h-16 w-16 bg-primary rounded-full text-white mb-6 shadow-lg">
-          {icon}
-        </div>
-        <h3 className="text-2xl font-bold text-gray-800 mb-3">{title}</h3>
-        <p className="text-gray-600">{description}</p>
+  // A new component for the top stat cards
+  const StatCard = ({ title, value, icon }: { title: string, value: string, icon: React.ReactNode }) => (
+    <div className="bg-white/30 backdrop-blur-lg rounded-xl p-6 flex items-center gap-6 shadow-md">
+      <div className="bg-primary/20 text-primary p-3 rounded-full">
+        {icon}
       </div>
+      <div>
+        <h4 className="text-sm font-medium text-gray-600">{title}</h4>
+        <p className="text-3xl font-bold text-gray-800">{value}</p>
+      </div>
+    </div>
+  );
+
+  const FeatureCard = ({ title, description, href, icon }: { title: string, description: string, href: string, icon: React.ReactNode }) => (
+    <Link href={href} className="block bg-white/30 backdrop-blur-lg rounded-xl shadow-lg hover:shadow-2xl transform transition-all duration-300 hover:-translate-y-2 h-full overflow-hidden">
+        <div className="p-8">
+            <div className="flex items-center justify-center h-16 w-16 bg-primary rounded-full text-white mb-6 shadow-lg">
+                {icon}
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-3">{title}</h3>
+            <p className="text-gray-600">{description}</p>
+        </div>
     </Link>
   );
 
   return (
-    <div className="min-h-screen animated-gradient flex items-center justify-center">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <header className="text-center mb-12">
-          <h1 className="text-5xl font-extrabold text-white tracking-tight">Teacher Dashboard</h1>
-          <p className="mt-4 text-xl text-white/80">Your central hub for classroom and question paper management.</p>
+    <div className="min-h-screen animated-gradient">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <header className="mb-12">
+          <h1 className="text-4xl font-extrabold text-white tracking-tight">Teacher Dashboard</h1>
+          <p className="mt-2 text-xl text-white/80">Welcome back, here's an overview of your workspace.</p>
         </header>
 
+        {/* Stat Cards Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <StatCard title="Total Students" value="80" icon={<UsersIcon size={28}/>} />
+            <StatCard title="Classrooms" value="2" icon={<BookOpenCheck size={28}/>} />
+            <StatCard title="Papers Created" value="4" icon={<FilePlus2Icon size={28}/>} />
+            <StatCard title="Avg. Score" value="82%" icon={<BarChartIcon size={28}/>} />
+        </div>
+
+        {/* Tools Section */}
         <main>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-white mb-8">Your Tools</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <FeatureCard
               title="Manage Classrooms"
-              description="Create new classrooms, view existing ones, and manage saved question papers within each class."
+              description="Create, view, and manage your classrooms and their question papers."
               href="/teacher/classrooms"
               icon={<BookOpenCheck size={32} />}
             />
             <FeatureCard
               title="Create Question Paper"
-              description="Generate new question papers using the AI assistant and save them to your classrooms."
+              description="Use the AI assistant to generate new question papers from your materials."
               href="/teacher/helper"
               icon={<Newspaper size={32} />}
             />
             <FeatureCard
               title="Compare Papers"
-              description="Select two question papers and get an AI-powered comparison of their content and structure."
+              description="Get an AI-powered comparison of two different question papers."
               href="/teacher/paper-comparison"
               icon={<GitCompareArrowsIcon size={32} />}
+            />
+            <FeatureCard
+              title="Evaluate Answers"
+              description="Upload a handwritten answer sheet for an AI-powered evaluation."
+              href="/teacher/evaluate-answers"
+              icon={<ClipboardCheckIcon size={32} />}
             />
           </div>
         </main>
