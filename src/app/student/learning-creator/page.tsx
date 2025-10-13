@@ -8,6 +8,9 @@ import {
 } from "./actions";
 import Link from "next/link";
 import Confetti from "react-confetti";
+import { SaveIcon } from "lucide-react";
+
+// ... (keep all the existing interface definitions)
 interface Flashcard {
   id: string;
   front: string;
@@ -24,6 +27,7 @@ interface Chapter {
   id: string;
   flashcards: Flashcard[];
   questions: Question[];
+  topic: string;
 }
 interface TheoryEvaluation {
   evaluation: "correct" | "partially-correct" | "incorrect";
@@ -51,10 +55,13 @@ interface FinalFeedback {
   }[];
 }
 
+
 export default function StudentLearningCreatorPage() {
   const [chapter, setChapter] = useState<Chapter | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
   const [quizLoading, setQuizLoading] = useState(false);
   const [reviewIndex, setReviewIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<
@@ -73,6 +80,8 @@ export default function StudentLearningCreatorPage() {
     "flashcards"
   );
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [topic, setTopic] = useState('');
+
 
   const handleGenerationSubmit = async (
     e: React.FormEvent<HTMLFormElement>
@@ -81,6 +90,7 @@ export default function StudentLearningCreatorPage() {
     setError("");
     setChapter(null);
     setLoading(true);
+    setSaveSuccess(false);
     setSelectedAnswers({});
     setTheoryAnswers({});
     setFinalFeedback(null);
@@ -90,13 +100,37 @@ export default function StudentLearningCreatorPage() {
     setActiveTab("flashcards");
 
     const formData = new FormData(e.currentTarget);
+    const currentTopic = formData.get('topic') as string;
+    setTopic(currentTopic);
+    
     const result = await generateChapter(formData);
     setLoading(false);
 
     if (result.success) {
-      setChapter(result.chapter as Chapter);
+      setChapter({ ...(result.chapter as Omit<Chapter, 'topic'>), topic: currentTopic });
     } else {
       setError(result.error as string);
+    }
+  };
+
+  const handleSaveChapter = async () => {
+    if (!chapter) return;
+    setSaving(true);
+    setError('');
+    try {
+        const response = await fetch('/api/student/chapters', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(chapter)
+        });
+        if (!response.ok) throw new Error("Failed to save the chapter.");
+        const result = await response.json();
+        if(!result.success) throw new Error(result.error || "Could not save the chapter.");
+        setSaveSuccess(true);
+    } catch(err: any) {
+        setError(err.message || "An unexpected error occurred while saving.");
+    } finally {
+        setSaving(false);
     }
   };
 
@@ -181,12 +215,22 @@ export default function StudentLearningCreatorPage() {
           <h1 className="text-xl font-bold tracking-tight">
             Dynamic Chapter Creator
           </h1>
-          <div className="w-28"></div> {/* Spacer */}
+          <div className="w-28 flex justify-end">
+            {chapter && !finalFeedback && (
+              <button
+                onClick={handleSaveChapter}
+                disabled={saving || saveSuccess}
+                className="flex items-center gap-2 px-3 py-1.5 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 transition-colors disabled:opacity-50"
+              >
+                {saving ? <><Loader2Icon className="h-4 w-4 animate-spin" /> Saving...</> : saveSuccess ? <>Saved!</> : <><SaveIcon className="h-4 w-4" /> Save</>}
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
       <main className="container mx-auto py-8 md:py-12 px-4">
-        {/* --- Generation Form --- */}
+        {/* ... (rest of the component remains the same) */}
         {!chapter && !loading && (
           <div className="mx-auto max-w-2xl">
             <div className="relative bg-card/60 backdrop-blur-lg border border-white/20 rounded-2xl p-8">
@@ -254,7 +298,6 @@ export default function StudentLearningCreatorPage() {
           </div>
         )}
 
-        {/* --- Loading Indicator --- */}
         {loading && (
           <div className="text-center text-white">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
@@ -265,7 +308,6 @@ export default function StudentLearningCreatorPage() {
           </div>
         )}
 
-        {/* --- Error Display --- */}
         {error && (
           <div className="mx-auto max-w-2xl bg-destructive/80 backdrop-blur-lg border border-red-500/50 rounded-2xl p-8 text-center text-destructive-foreground">
             <h2 className="text-2xl font-bold mb-2">An Error Occurred</h2>
@@ -273,7 +315,6 @@ export default function StudentLearningCreatorPage() {
           </div>
         )}
 
-        {/* --- Chapter & Quiz Display --- */}
         {chapter && !finalFeedback && (
           <div className="w-full">
             {/* Tabs */}
@@ -678,4 +719,8 @@ const LightbulbIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <path d="M9 18h6" />
     <path d="M10 22h4" />
   </svg>
+);
+
+const Loader2Icon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
 );

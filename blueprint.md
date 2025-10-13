@@ -7,22 +7,17 @@ This project provides AI-powered tools for both teachers and students to enhance
 
 ## Implemented Features
 
-*   **Teacher Helper Question Paper Generator:** An AI tool for teachers to generate question papers for any subject and grade.
-*   **Student Dynamic Learning Chapter Creator:** A tool that allows students to generate personalized learning chapters on any topic they choose.
-*   **Learning Support Agent:** A conversational AI to help students with their questions.
-*   **Student and Teacher Dashboards:** Separate dashboards for students and teachers to access their respective tools.
-*   **Teacher Chatbot:** An AI assistant to help teachers find their question papers.
-*   **Paper Comparison Tool:** An AI-powered tool for teachers to compare two question papers.
-*   **Handwritten Answer Sheet Evaluation:** An AI tool to evaluate handwritten student answers.
+*   **Teacher & Student Features:** Includes dashboards, a question paper generator, a learning chapter creator, a presentation coach, paper comparison, and answer evaluation tools.
+*   **AI-Powered Chatbot:** An integrated AI assistant for teachers.
+*   **Student Dashboard Enhancements:** Redesigned UI with stat cards and placeholders for "My Learning Library" and "Goals & Progress".
 
 ## New Features
 
-### 1. Student Performance Dashboard (Mock)
+### 1. Save Generated Chapters & Quizzes
 
 **Plan:**
 
-1.  **Create a new page** for the analytics dashboard at `src/app/teacher/analytics/page.tsx`.
-2.  **Install `recharts`** for data visualization.
-3.  **Create a mock data utility** at `src/lib/mock-data.ts` to generate student and score data for Grade 9 and Grade 10.
-4.  **Implement the UI** with tabs, tables, and charts to display class averages, score distributions, and predictive trends.
-5.  **Update the teacher dashboard** to include a link to the new analytics page.
+1.  **Create a new API route** at `src/app/api/student/chapters/route.ts` to handle saving chapter data (flashcards and quizzes) to MongoDB.
+2.  **Add a "Save Chapter" button** to the `learning-creator` page that appears after generation.
+3.  **Implement the save functionality** in `src/app/student/learning-creator/page.tsx` to send the chapter data to the new API endpoint.
+4.  **Provide user feedback** upon successful save or if an error occurs.

@@ -3,6 +3,20 @@
 
 import { GoogleGenerativeAI, Part } from '@google/generative-ai';
 
+// A more robust utility to find and extract a JSON object from a string.
+const extractJson = (text: string): string | null => {
+    const startIndex = text.indexOf('{');
+    const endIndex = text.lastIndexOf('}');
+  
+    if (startIndex === -1 || endIndex === -1 || endIndex < startIndex) {
+      // No valid JSON object found
+      return null;
+    }
+  
+    const jsonString = text.substring(startIndex, endIndex + 1);
+    return jsonString;
+};
+
 async function fileToGenerativePart(file: File): Promise<Part> {
     const base64EncodedData = await file.arrayBuffer().then((buffer) =>
       Buffer.from(buffer).toString('base64')
@@ -78,19 +92,18 @@ The content should be engaging, informative, and easy to understand. Please prov
   try {
     const result = await model.generateContent({contents: [{role: "user", parts:promptParts}]});
     const responseText = result.response.text();
-    
-    const jsonStringMatch = responseText.match(/```json\n([\s\S]*?)\n```/);
-    let chapter;
-    if (jsonStringMatch && jsonStringMatch[1]) {
-        chapter = JSON.parse(jsonStringMatch[1]);
-    } else {
-        chapter = JSON.parse(responseText);
+    const jsonString = extractJson(responseText);
+
+    if (!jsonString) {
+      throw new Error("The AI did not return a valid chapter structure. Please try refining your topic.");
     }
 
+    const chapter = JSON.parse(jsonString);
     return { success: true, chapter };
   } catch (error) {
     console.error(error);
-    return { success: false, error: 'An error occurred while generating the chapter.' };
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
+    return { success: false, error: `An error occurred while generating the chapter: ${errorMessage}` };
   }
 }
 
@@ -119,8 +132,13 @@ export async function evaluateTheoryQuestion(userAnswer: string, correctAnswer: 
   try {
     const result = await model.generateContent(prompt);
     const responseText = result.response.text();
-    const jsonMatch = responseText.match(/```json\n([\s\S]*?)\n```/);
-    const evaluation = JSON.parse(jsonMatch ? jsonMatch[1] : responseText);
+    const jsonString = extractJson(responseText);
+
+    if (!jsonString) {
+      throw new Error("The AI did not return a valid evaluation.");
+    }
+    
+    const evaluation = JSON.parse(jsonString);
     return { success: true, evaluation };
   } catch (error) {
     console.error(error);
@@ -178,8 +196,12 @@ export async function generateQuizFeedback(results: QuizResult[]) {
   try {
     const result = await model.generateContent(prompt);
     const responseText = result.response.text();
-    const jsonMatch = responseText.match(/```json\n([\s\S]*?)\n```/);
-    const feedback = JSON.parse(jsonMatch ? jsonMatch[1] : responseText);
+    const jsonString = extractJson(responseText);
+
+    if (!jsonString) {
+        throw new Error("The AI did not return valid feedback.");
+    }
+    const feedback = JSON.parse(jsonString);
     return { success: true, feedback };
   } catch (error)
  {
