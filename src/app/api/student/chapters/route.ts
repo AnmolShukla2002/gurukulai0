@@ -3,8 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 
-// A mock student ID, formatted as a valid ObjectId
-const MOCK_STUDENT_ID = '60d5ec49a1d2e1001c8f8b81'; 
+const MOCK_STUDENT_ID = '60d5ec49a1d2e1001c8f8b81';
 
 export async function POST(req: NextRequest) {
     try {
@@ -23,6 +22,23 @@ export async function POST(req: NextRequest) {
       };
   
       const result = await db.collection('chapters').insertOne(newChapter);
+
+      // --- New Goal Progress Update Logic ---
+      const goalsToUpdate = await db.collection('goals').find({
+        studentId: new ObjectId(MOCK_STUDENT_ID),
+        completed: false,
+        title: { $regex: new RegExp(chapterData.topic, "i") } // Case-insensitive match on topic
+      }).toArray();
+
+      for (const goal of goalsToUpdate) {
+        const newProgress = goal.progress + 1;
+        const isCompleted = newProgress >= goal.target;
+        await db.collection('goals').updateOne(
+          { _id: goal._id },
+          { $set: { progress: newProgress, completed: isCompleted } }
+        );
+      }
+      // --- End of New Logic ---
   
       return NextResponse.json({ success: true, insertedId: result.insertedId }, { status: 201 });
     } catch (error) {

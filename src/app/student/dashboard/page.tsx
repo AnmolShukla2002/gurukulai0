@@ -14,7 +14,7 @@ import {
 export default function StudentDashboardPage() {
   const StatCard = ({ title, value, icon }: { title: string, value: string, icon: React.ReactNode }) => (
     <div className="bg-white/30 backdrop-blur-lg rounded-xl p-6 flex items-center gap-6 shadow-md">
-      <div className="bg-secondary/20 text-secondary p-3 rounded-full">
+      <div className="bg-primary/20 text-primary p-3 rounded-full">
         {icon}
       </div>
       <div>
@@ -27,7 +27,7 @@ export default function StudentDashboardPage() {
   const FeatureCard = ({ title, description, href, icon }: { title: string, description: string, href: string, icon: React.ReactNode }) => (
     <Link href={href} className="block bg-white/30 backdrop-blur-lg rounded-xl shadow-lg hover:shadow-2xl transform transition-all duration-300 hover:-translate-y-2 h-full overflow-hidden">
         <div className="p-8">
-            <div className="flex items-center justify-center h-16 w-16 bg-secondary rounded-full text-white mb-6 shadow-lg">
+            <div className="flex items-center justify-center h-16 w-16 bg-primary rounded-full text-white mb-6 shadow-lg">
                 {icon}
             </div>
             <h3 className="text-2xl font-bold text-gray-800 mb-3">{title}</h3>

@@ -57,7 +57,7 @@ export default function TeacherDashboardPage() {
         {/* Tools Section */}
         <main>
           <h2 className="text-3xl font-bold text-white mb-8">Your Tools</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             <FeatureCard
               title="Manage Classrooms"
               description="Create, view, and manage your classrooms and their question papers."
@@ -81,6 +81,12 @@ export default function TeacherDashboardPage() {
               description="Upload a handwritten answer sheet for an AI-powered evaluation."
               href="/teacher/evaluate-answers"
               icon={<ClipboardCheckIcon size={32} />}
+            />
+             <FeatureCard
+              title="Student Analytics"
+              description="View student performance, class averages, and predictive insights with mock data."
+              href="/teacher/analytics"
+              icon={<BarChartIcon size={32} />}
             />
           </div>
         </main>
