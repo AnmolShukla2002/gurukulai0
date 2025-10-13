@@ -45,7 +45,6 @@ export async function DELETE(req: NextRequest, { params }: RouteContext) {
       return NextResponse.json({ success: false, error: 'Classroom not found' }, { status: 404 });
     }
 
-    // Also delete associated question papers
     await db.collection('questionPapers').deleteMany({ classroomId: new ObjectId(id) });
 
 

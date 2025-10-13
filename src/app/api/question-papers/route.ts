@@ -5,7 +5,7 @@ import { ObjectId } from 'mongodb';
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const classroomId = searchParams.get('classroomId');
+    const classroomId = await searchParams.get('classroomId');
 
     if (!classroomId) {
       return NextResponse.json({ success: false, error: 'Classroom ID is required' }, { status: 400 });
