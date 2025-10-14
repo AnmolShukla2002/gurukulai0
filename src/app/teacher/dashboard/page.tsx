@@ -60,7 +60,7 @@ function TeacherDashboardContent() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <header className="mb-12">
             <h1 className="text-4xl font-bold text-foreground tracking-tight">Teacher Dashboard</h1>
-            <p className="mt-2 text-lg text-muted-foreground">Welcome back, {teacherName || 'Teacher'}! Here's an overview of your workspace.</p>
+            <p className="mt-2 text-lg text-muted-foreground">Welcome, {teacherName || 'Teacher'}! Here's an overview of your workspace.</p>
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
