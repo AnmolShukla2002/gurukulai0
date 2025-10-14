@@ -1,9 +1,9 @@
-# 1. Dependency Stage: Install dependencies
+# 1. Dependency Stage: Install all dependencies
 FROM node:20-slim AS deps
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production
+RUN npm ci
 
 # 2. Builder Stage: Build the Next.js app
 FROM node:20-slim AS builder
