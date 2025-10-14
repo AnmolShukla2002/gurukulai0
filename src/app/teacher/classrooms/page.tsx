@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { PlusIcon, Trash2Icon, BookOpenIcon, PencilIcon, Loader2Icon, ArrowLeftIcon } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -98,44 +97,42 @@ export default function ClassroomsPage() {
 
 
   const ClassroomCard = ({ name, id }: { name: string, id: string }) => (
-    <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
-        <div className="absolute inset-0 bg-white/60 backdrop-blur-lg z-10"></div>
-        <div className="relative z-20 p-6 flex flex-col h-full">
-            <div className="flex-grow">
-                <div className="flex items-center justify-center h-16 w-16 bg-primary rounded-full text-white mb-6 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                    <BookOpenIcon size={32} />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2 truncate">{name}</h3>
-                <p className="text-gray-600 mb-4">Classroom</p>
+    <div 
+        className="bg-card border border-border rounded-lg flex flex-col transition-all duration-300 hover:-translate-y-1"
+        style={{ boxShadow: '0 4px 25px -5px rgba(66, 133, 244, 0.4)'}}
+    >
+        <div className="p-6 flex-grow">
+            <div className="flex items-center justify-center h-12 w-12 bg-blue-500/10 text-blue-500 rounded-full mb-4">
+                <BookOpenIcon size={24} />
             </div>
-            <div className="mt-auto">
-                <Link href={`/teacher/classrooms/${id}`}>
-                    <Button className="w-full font-semibold">View Details</Button>
-                </Link>
-                <div className="flex justify-end gap-2 mt-4">
-                    <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-800" disabled>
-                        <PencilIcon className="h-4 w-4 mr-1" />
-                        Edit
-                    </Button>
-                    <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-700" onClick={() => setClassroomToDelete({ _id: id, name })}>
-                        <Trash2Icon className="h-4 w-4 mr-1" />
-                        Delete
-                    </Button>
-                </div>
+            <h3 className="text-xl font-bold text-foreground mb-1 truncate">{name}</h3>
+            <p className="text-muted-foreground text-sm">Classroom</p>
+        </div>
+        <div className="p-6 pt-0 mt-auto">
+            <Link href={`/teacher/classrooms/${id}`}>
+                <Button className="w-full font-semibold">View Details</Button>
+            </Link>
+            <div className="flex justify-end gap-1 mt-3">
+                <Button variant="ghost" size="sm" className="text-muted-foreground hover:bg-muted/50 hover:text-foreground" disabled>
+                    <PencilIcon className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="sm" className="text-red-500/80 hover:bg-red-500/10 hover:text-red-500" onClick={() => setClassroomToDelete({ _id: id, name })}>
+                    <Trash2Icon className="h-4 w-4" />
+                </Button>
             </div>
         </div>
     </div>
   );
 
   return (
-    <div className="min-h-screen animated-gradient">
-      <header className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
+    <div className="min-h-screen bg-background">
+      <header className="bg-card border-b border-border sticky top-0 z-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         <Link href="/teacher/dashboard" className="flex items-center gap-2 text-sm font-semibold hover:text-primary transition-colors">
             <ArrowLeftIcon className="h-4 w-4" />
             Back to Dashboard
           </Link>
-          <h1 className="text-2xl font-bold text-gray-800">Manage Classrooms</h1>
+          <h1 className="text-xl font-bold text-foreground">Manage Classrooms</h1>
           <Button onClick={() => setIsModalOpen(true)}>
             <PlusIcon className="h-5 w-5 mr-2" />
             Create Classroom
@@ -146,20 +143,20 @@ export default function ClassroomsPage() {
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <Loader2Icon className="h-12 w-12 animate-spin text-white" />
+            <Loader2Icon className="h-12 w-12 animate-spin text-primary" />
           </div>
         ) : error ? (
-          <div className="text-center text-red-200 bg-red-800/50 p-4 rounded-lg">{error}</div>
+          <div className="text-center text-red-600 bg-red-500/10 p-4 rounded-lg">{error}</div>
         ) : classrooms.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {classrooms.map((classroom) => (
               <ClassroomCard key={classroom._id} name={classroom.name} id={classroom._id} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 bg-white/50 backdrop-blur-sm border-2 border-dashed border-gray-300 rounded-lg">
-            <h2 className="text-xl font-medium text-gray-700">No classrooms yet</h2>
-            <p className="text-gray-500 mt-2">Click the button above to create your first classroom.</p>
+          <div className="text-center py-16 bg-card border-2 border-dashed border-border rounded-lg">
+            <h2 className="text-xl font-medium text-foreground">No classrooms yet</h2>
+            <p className="text-muted-foreground mt-2">Click the button above to create your first classroom.</p>
           </div>
         )}
       </main>

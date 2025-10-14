@@ -21,7 +21,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-background text-foreground`}>
         <Navbar toggleSidebar={toggleSidebar} />
         <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
         <main>{children}</main>

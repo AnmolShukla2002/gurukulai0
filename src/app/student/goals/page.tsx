@@ -9,6 +9,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 
+const googleColors = {
+  red: '#EA4335',
+};
+
 interface Goal {
   _id: string;
   title: string;
@@ -67,14 +71,14 @@ export default function GoalsPage() {
   };
 
   return (
-    <div className="min-h-screen animated-gradient">
-      <header className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
+    <div className="min-h-screen bg-background">
+      <header className="bg-card border-b border-border sticky top-0 z-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <Link href="/student/dashboard" className="flex items-center gap-2 text-sm font-semibold hover:text-primary transition-colors">
             <ArrowLeftIcon className="h-4 w-4" />
             Back to Dashboard
           </Link>
-          <h1 className="text-2xl font-bold text-gray-800">Goals & Progress</h1>
+          <h1 className="text-xl font-bold text-foreground">Goals & Progress</h1>
           <Button onClick={() => setIsModalOpen(true)}>
             <PlusIcon className="h-5 w-5 mr-2" />
             Set New Goal
@@ -83,14 +87,26 @@ export default function GoalsPage() {
       </header>
 
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="text-center mb-12">
+            <div className="inline-block p-4 bg-red-500/10 text-red-500 rounded-full mb-6">
+                <TargetIcon className="h-12 w-12" />
+            </div>
+            <h1 className="text-4xl font-bold text-foreground mb-4">Your Goals</h1>
+            <p className="text-xl text-muted-foreground">Track your learning journey and stay motivated.</p>
+        </div>
+
         {loading ? (
-          <div className="flex justify-center"><Loader2Icon className="h-12 w-12 animate-spin text-white" /></div>
+          <div className="flex justify-center"><Loader2Icon className="h-12 w-12 animate-spin text-primary" /></div>
         ) : error ? (
-          <div className="text-center text-red-200 bg-red-800/50 p-4 rounded-lg">{error}</div>
+          <div className="text-center text-red-600 bg-red-500/10 p-4 rounded-lg">{error}</div>
         ) : goals.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {goals.map(goal => (
-              <Card key={goal._id} className={`bg-white/60 backdrop-blur-lg ${goal.completed ? 'opacity-70' : ''}`}>
+              <Card 
+                key={goal._id} 
+                className={`bg-card border border-border flex flex-col transition-all duration-300 hover:-translate-y-1 ${goal.completed ? 'opacity-70' : ''}`}
+                style={{ boxShadow: `0 4px 25px -5px ${googleColors.red}44`}}
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     <span className="truncate">{goal.title}</span>
@@ -99,22 +115,22 @@ export default function GoalsPage() {
                   <CardDescription>Target: {goal.target} chapters</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="w-full bg-gray-200/50 rounded-full h-4">
+                  <div className="w-full bg-muted rounded-full h-4">
                     <div
-                      className={`h-4 rounded-full ${goal.completed ? 'bg-green-500' : 'bg-primary'}`}
+                      className={`h-4 rounded-full ${goal.completed ? 'bg-green-500' : 'bg-red-500'}`}
                       style={{ width: `${Math.min(100, (goal.progress / goal.target) * 100)}%` }}
                     ></div>
                   </div>
-                  <p className="text-right text-sm text-gray-600 mt-2">{goal.progress} / {goal.target} Completed</p>
+                  <p className="text-right text-sm text-muted-foreground mt-2">{goal.progress} / {goal.target} Completed</p>
                 </CardContent>
               </Card>
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 bg-white/50 backdrop-blur-sm border-2 border-dashed border-gray-300 rounded-lg">
-            <TargetIcon className="mx-auto h-12 w-12 text-gray-400" />
-            <h2 className="mt-4 text-xl font-medium text-gray-700">No goals set yet</h2>
-            <p className="text-gray-500 mt-2">Click the button above to set your first learning goal.</p>
+          <div className="text-center py-16 bg-card border-2 border-dashed border-border rounded-lg">
+            <TargetIcon className="mx-auto h-12 w-12 text-muted-foreground" />
+            <h2 className="mt-4 text-xl font-medium text-foreground">No goals set yet</h2>
+            <p className="text-muted-foreground mt-2">Click the button above to set your first learning goal.</p>
           </div>
         )}
       </main>

@@ -36,21 +36,39 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const handleSendMessage = async () => {
     if (!input.trim()) return;
 
-    const newMessages: Message[] = [...messages, { role: 'user', content: input, isHtml: false }];
+    const userMessage: Message = { role: 'user', content: input, isHtml: false };
+    const newMessages: Message[] = [...messages, userMessage];
+    
     setMessages(newMessages);
     setInput('');
 
-    const response = await fetch('/api/teacher/chatbot', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: newMessages }),
-    });
+    try {
+        const response = await fetch('/api/teacher/chatbot', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: newMessages }),
+        });
 
-    if (response.ok) {
-      const data = await response.json();
-      setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: data.message, papers: data.papers, isHtml: data.isHtml }]);
-    } else {
-      setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: 'Sorry, I encountered an error.', isHtml: false }]);
+        if (!response.ok) {
+            throw new Error('API response was not ok.');
+        }
+
+        const data = await response.json();
+        const assistantMessage: Message = { 
+            role: 'assistant', 
+            content: data.message, 
+            papers: data.papers, 
+            isHtml: data.isHtml 
+        };
+        setMessages([...newMessages, assistantMessage]);
+
+    } catch (error) {
+        const errorMessage: Message = { 
+            role: 'assistant', 
+            content: 'Sorry, I encountered an error.', 
+            isHtml: false 
+        };
+        setMessages([...newMessages, errorMessage]);
     }
   };
 
@@ -75,14 +93,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           {messages.map((message, index) => (
             <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div
-                className={`max-w-xs md:max-w-md p-3 rounded-lg text-xs ${ // Set base font size to extra-small
+                className={`max-w-xs md:max-w-md p-3 rounded-lg text-xs ${
                   message.role === 'user' ? 'bg-blue-600' : 'bg-gray-700'
                 }`}
               >
                 {message.isHtml ? (
                   <div className="prose prose-sm prose-invert" dangerouslySetInnerHTML={{ __html: message.content }} />
                 ) : (
-                    <p>{message.content}</p> // Removed specific size class to inherit from parent
+                    <p>{message.content}</p>
                 )}
 
                 {message.papers && message.papers.length > 0 && (

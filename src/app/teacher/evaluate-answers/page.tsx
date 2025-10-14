@@ -7,6 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { UploadIcon, ArrowLeftIcon, Loader2Icon } from 'lucide-react';
 import Link from 'next/link';
 
+const googleColors = {
+    red: '#EA4335',
+};
+
 interface Paper {
   _id: string;
   title: string;
@@ -77,8 +81,8 @@ export default function EvaluateAnswersPage() {
   };
 
   return (
-    <div className="min-h-screen animated-gradient">
-      <header className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
+    <div className="min-h-screen bg-background">
+      <header className="bg-card border-b border-border sticky top-0 z-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center">
           <Link href="/teacher/dashboard" className="flex items-center gap-2 text-sm font-semibold hover:text-primary transition-colors">
             <ArrowLeftIcon className="h-4 w-4" />
@@ -87,8 +91,11 @@ export default function EvaluateAnswersPage() {
         </div>
       </header>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-4xl font-bold text-white text-center mb-8">Evaluate Answer Sheet</h1>
-        <Card className="max-w-4xl mx-auto bg-white/50 backdrop-blur-sm">
+        <h1 className="text-4xl font-bold text-foreground text-center mb-8">Evaluate Answer Sheet</h1>
+        <Card 
+            className="max-w-4xl mx-auto"
+            style={{ boxShadow: `0 4px 25px -5px ${googleColors.red}44`}}
+        >
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <Select onValueChange={setSelectedPaper}>
@@ -98,9 +105,9 @@ export default function EvaluateAnswersPage() {
                 </SelectContent>
               </Select>
               <div>
-                <label htmlFor="answer-sheet-upload" className="flex items-center justify-center gap-3 w-full p-3 bg-white/50 border-2 border-dashed border-gray-300/80 rounded-lg cursor-pointer hover:border-primary transition-colors">
-                  <UploadIcon className="h-6 w-6 text-gray-500"/>
-                  <span className="text-gray-600 truncate">{answerSheet?.name || "Upload Answer Sheet"}</span>
+                <label htmlFor="answer-sheet-upload" className="flex items-center justify-center gap-3 w-full p-3 bg-input border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary transition-colors">
+                  <UploadIcon className="h-6 w-6 text-muted-foreground"/>
+                  <span className="text-muted-foreground truncate">{answerSheet?.name || "Upload Answer Sheet"}</span>
                 </label>
                 <input type="file" id="answer-sheet-upload" className="sr-only" onChange={handleFileChange} accept="image/*" />
               </div>
@@ -114,13 +121,16 @@ export default function EvaluateAnswersPage() {
           </CardContent>
         </Card>
 
-        {error && <p className="text-red-200 text-center mt-4">{error}</p>}
+        {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
         {evaluation && (
-          <Card className="max-w-4xl mx-auto mt-8 bg-white/50 backdrop-blur-sm">
+          <Card 
+            className="max-w-4xl mx-auto mt-8"
+            style={{ boxShadow: `0 4px 25px -5px ${googleColors.red}44`}}
+          >
             <CardContent className="p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Evaluation Result</h2>
-              <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: evaluation }} />
+              <h2 className="text-2xl font-bold text-foreground mb-4">Evaluation Result</h2>
+              <div className="prose max-w-none prose-sm" dangerouslySetInnerHTML={{ __html: evaluation }} />
             </CardContent>
           </Card>
         )}
