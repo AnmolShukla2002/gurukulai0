@@ -13,6 +13,7 @@ type Paper = {
 type Message = {
   role: 'user' | 'assistant';
   content: string;
+  isHtml: boolean;
   papers?: Paper[];
 };
 
@@ -35,7 +36,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const handleSendMessage = async () => {
     if (!input.trim()) return;
 
-    const newMessages: Message[] = [...messages, { role: 'user', content: input }];
+    const newMessages: Message[] = [...messages, { role: 'user', content: input, isHtml: false }];
     setMessages(newMessages);
     setInput('');
 
@@ -47,9 +48,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
     if (response.ok) {
       const data = await response.json();
-      setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: data.message, papers: data.papers }]);
+      setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: data.message, papers: data.papers, isHtml: data.isHtml }]);
     } else {
-      setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: 'Sorry, I encountered an error.' }]);
+      setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: 'Sorry, I encountered an error.', isHtml: false }]);
     }
   };
 
@@ -74,11 +75,16 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           {messages.map((message, index) => (
             <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div
-                className={`max-w-xs md:max-w-md p-3 rounded-lg ${
+                className={`max-w-xs md:max-w-md p-3 rounded-lg text-xs ${ // Set base font size to extra-small
                   message.role === 'user' ? 'bg-blue-600' : 'bg-gray-700'
                 }`}
               >
-                <p className="text-sm">{message.content}</p>
+                {message.isHtml ? (
+                  <div className="prose prose-sm prose-invert" dangerouslySetInnerHTML={{ __html: message.content }} />
+                ) : (
+                    <p>{message.content}</p> // Removed specific size class to inherit from parent
+                )}
+
                 {message.papers && message.papers.length > 0 && (
                   <div className="mt-2 space-y-2">
                     {message.papers.map((paper) => (
