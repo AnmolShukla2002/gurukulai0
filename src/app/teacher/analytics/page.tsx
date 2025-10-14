@@ -17,7 +17,10 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from '@/components/ui/table';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
+const COLORS = ['#4285F4', '#34A853', '#FBBC05', '#EA4335', '#8884d8'];
+const googleColors = {
+    blue: '#4285F4',
+};
 
 export default function AnalyticsPage() {
   const [activeTab, setActiveTab] = useState('grade9');
@@ -28,8 +31,8 @@ export default function AnalyticsPage() {
   const prediction = predictiveData(data);
 
   return (
-    <div className="min-h-screen animated-gradient">
-      <header className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
+    <div className="min-h-screen bg-background">
+      <header className="bg-card border-b border-border sticky top-0 z-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center">
           <Link href="/teacher/dashboard" className="flex items-center gap-2 text-sm font-semibold hover:text-primary transition-colors">
             <ArrowLeftIcon className="h-4 w-4" />
@@ -38,7 +41,7 @@ export default function AnalyticsPage() {
         </div>
       </header>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-4xl font-bold text-white text-center mb-8">Student Performance Dashboard</h1>
+        <h1 className="text-4xl font-bold text-foreground text-center mb-8">Student Performance Dashboard</h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
           <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
@@ -48,7 +51,10 @@ export default function AnalyticsPage() {
         </Tabs>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <Card className="lg:col-span-2 bg-white/50 backdrop-blur-sm">
+          <Card 
+            className="lg:col-span-2"
+            style={{ boxShadow: `0 4px 25px -5px ${googleColors.blue}44`}}
+          >
             <CardHeader><CardTitle>Student Scores</CardTitle></CardHeader>
             <CardContent className="h-96 overflow-auto">
               <Table>
@@ -75,7 +81,9 @@ export default function AnalyticsPage() {
               </Table>
             </CardContent>
           </Card>
-          <Card className="bg-white/50 backdrop-blur-sm">
+          <Card 
+            style={{ boxShadow: `0 4px 25px -5px ${googleColors.blue}44`}}
+          >
             <CardHeader><CardTitle>Class Averages</CardTitle></CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -85,17 +93,19 @@ export default function AnalyticsPage() {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="average" fill="#8884d8" />
+                  <Bar dataKey="average" fill={googleColors.blue} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
-          <Card className="bg-white/50 backdrop-blur-sm">
+          <Card 
+            style={{ boxShadow: `0 4px 25px -5px ${googleColors.blue}44`}}
+          >
             <CardHeader><CardTitle>Math Score Distribution</CardTitle></CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
-                  <Pie data={mathDistribution} dataKey="count" nameKey="range" cx="50%" cy="50%" outerRadius={100} fill="#8884d8" label>
+                  <Pie data={mathDistribution} dataKey="count" nameKey="range" cx="50%" cy="50%" outerRadius={100} fill={googleColors.blue} label>
                     {mathDistribution.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
@@ -106,7 +116,10 @@ export default function AnalyticsPage() {
               </ResponsiveContainer>
             </CardContent>
           </Card>
-          <Card className="lg:col-span-2 bg-white/50 backdrop-blur-sm">
+          <Card 
+            className="lg:col-span-2"
+            style={{ boxShadow: `0 4px 25px -5px ${googleColors.blue}44`}}
+          >
             <CardHeader><CardTitle>Predictive Performance</CardTitle></CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -116,8 +129,8 @@ export default function AnalyticsPage() {
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Line type="monotone" dataKey="current" stroke="#8884d8" activeDot={{ r: 8 }} />
-                  <Line type="monotone" dataKey="predicted" stroke="#82ca9d" />
+                  <Line type="monotone" dataKey="current" stroke={googleColors.blue} activeDot={{ r: 8 }} />
+                  <Line type="monotone" dataKey="predicted" stroke={COLORS[1]} />
                 </LineChart>
               </ResponsiveContainer>
             </CardContent>

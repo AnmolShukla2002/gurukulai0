@@ -38,8 +38,8 @@ export default function MyLibraryPage() {
   }, []);
 
   return (
-    <div className="min-h-screen animated-gradient">
-      <header className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-10">
+    <div className="min-h-screen bg-background">
+      <header className="bg-card border-b border-border sticky top-0 z-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center">
           <Link href="/student/dashboard" className="flex items-center gap-2 text-sm font-semibold hover:text-primary transition-colors">
             <ArrowLeftIcon className="h-4 w-4" />
@@ -49,24 +49,32 @@ export default function MyLibraryPage() {
       </header>
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
-            <LibraryIcon className="mx-auto h-16 w-16 text-white mb-6" />
-            <h1 className="text-4xl font-bold text-white mb-4">My Learning Library</h1>
-            <p className="text-xl text-white/80">All your generated chapters, saved in one place.</p>
+            <div className="inline-block p-4 bg-yellow-500/10 text-yellow-500 rounded-full mb-6">
+                <LibraryIcon className="h-12 w-12" />
+            </div>
+            <h1 className="text-4xl font-bold text-foreground mb-4">My Learning Library</h1>
+            <p className="text-xl text-muted-foreground">All your generated chapters, saved in one place.</p>
         </div>
 
         {loading ? (
           <div className="flex justify-center items-center">
-            <Loader2Icon className="h-12 w-12 animate-spin text-white" />
+            <Loader2Icon className="h-12 w-12 animate-spin text-primary" />
           </div>
         ) : error ? (
-          <div className="text-center text-red-200 bg-red-800/50 p-4 rounded-lg">{error}</div>
+          <div className="text-center text-red-600 bg-red-500/10 p-4 rounded-lg">{error}</div>
         ) : chapters.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {chapters.map((chapter) => (
-              <Card key={chapter._id} className="bg-white/60 backdrop-blur-lg flex flex-col">
+              <Card 
+                key={chapter._id} 
+                className="bg-card border border-border flex flex-col transition-all duration-300 hover:-translate-y-2"
+                style={{ boxShadow: '0 4px 25px -5px rgba(251, 188, 5, 0.4)'}}
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3">
-                    <BookOpenIcon className="h-6 w-6 text-primary" />
+                    <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-yellow-500/10 text-yellow-500 rounded-full">
+                        <BookOpenIcon className="h-5 w-5" />
+                    </div>
                     <span className="truncate">{chapter.topic}</span>
                   </CardTitle>
                   <CardDescription>
@@ -82,9 +90,9 @@ export default function MyLibraryPage() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 bg-white/50 backdrop-blur-sm border-2 border-dashed border-gray-300 rounded-lg">
-            <h2 className="text-xl font-medium text-gray-700">Your library is empty.</h2>
-            <p className="text-gray-500 mt-2">Create a new chapter to get started!</p>
+          <div className="text-center py-16 bg-card border-2 border-dashed border-border rounded-lg">
+            <h2 className="text-xl font-medium text-foreground">Your library is empty.</h2>
+            <p className="text-muted-foreground mt-2">Create a new chapter to get started!</p>
             <Link href="/student/learning-creator">
                 <Button className="mt-6">Create a Chapter</Button>
             </Link>

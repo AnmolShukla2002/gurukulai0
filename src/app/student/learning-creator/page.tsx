@@ -200,8 +200,14 @@ export default function StudentLearningCreatorPage() {
     return (finalFeedback.score / finalFeedback.total) * 100;
   }, [finalFeedback]);
 
+  const baseButtonClasses = "px-6 py-2 rounded-lg transition-all duration-300";
+  const primaryButtonClasses = `${baseButtonClasses} bg-primary text-primary-foreground hover:brightness-90`;
+  const secondaryButtonClasses = `${baseButtonClasses} bg-secondary text-secondary-foreground hover:brightness-90`;
+  const mutedButtonClasses = `${baseButtonClasses} bg-muted text-muted-foreground hover:brightness-90 disabled:opacity-50`;
+
+
   return (
-    <div className="min-h-screen w-full animated-gradient text-foreground">
+    <div className="min-h-screen w-full bg-background text-foreground">
       {/* --- Sticky Header --- */}
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
         <div className="container mx-auto flex items-center justify-between p-4">
@@ -220,7 +226,7 @@ export default function StudentLearningCreatorPage() {
               <button
                 onClick={handleSaveChapter}
                 disabled={saving || saveSuccess}
-                className="flex items-center gap-2 px-3 py-1.5 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80 transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 px-3 py-1.5 text-sm bg-secondary text-secondary-foreground rounded-md hover:brightness-90 transition-colors disabled:opacity-50"
               >
                 {saving ? <><Loader2Icon className="h-4 w-4 animate-spin" /> Saving...</> : saveSuccess ? <>Saved!</> : <><SaveIcon className="h-4 w-4" /> Save</>}
               </button>
@@ -233,7 +239,7 @@ export default function StudentLearningCreatorPage() {
         {/* ... (rest of the component remains the same) */}
         {!chapter && !loading && (
           <div className="mx-auto max-w-2xl">
-            <div className="relative bg-card/60 backdrop-blur-lg border border-white/20 rounded-2xl p-8">
+            <div className="relative bg-card border border-border rounded-2xl p-8" style={{ boxShadow: '0 4px 25px -5px rgba(66, 133, 244, 0.4)'}}>
               <h2 className="text-3xl font-bold text-center mb-2">
                 Create Your Learning Chapter
               </h2>
@@ -250,7 +256,7 @@ export default function StudentLearningCreatorPage() {
                     name="topic"
                     required
                     placeholder="e.g., Photosynthesis, The French Revolution"
-                    className="w-full pl-10 pr-4 py-3 bg-input/50 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-primary"
+                    className="w-full pl-10 pr-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-primary"
                   />
                 </div>
                 {/* Learning Style Input */}
@@ -262,14 +268,14 @@ export default function StudentLearningCreatorPage() {
                     name="learning-style"
                     required
                     placeholder="e.g., Visual, Auditory, Kinesthetic"
-                    className="w-full pl-10 pr-4 py-3 bg-input/50 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-primary"
+                    className="w-full pl-10 pr-4 py-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-primary"
                   />
                 </div>
                 {/* File Upload */}
                 <div>
                   <label
                     htmlFor="file"
-                    className="flex items-center justify-center gap-3 w-full px-4 py-3 bg-input/50 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary transition-colors"
+                    className="flex items-center justify-center gap-3 w-full px-4 py-3 bg-input border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary transition-colors"
                   >
                     <UploadIcon className="h-5 w-5 text-muted-foreground" />
                     <span className="text-muted-foreground">
@@ -288,7 +294,7 @@ export default function StudentLearningCreatorPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-primary text-primary-foreground font-semibold rounded-lg shadow-lg hover:bg-primary/90 transition-transform hover:scale-105 disabled:bg-muted disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-primary text-primary-foreground font-semibold rounded-lg shadow-lg hover:brightness-90 transition-all duration-300 hover:scale-105 disabled:bg-muted disabled:cursor-not-allowed"
                 >
                   <WandIcon className="h-5 w-5" />
                   {loading ? "Generating..." : "Generate Chapter"}
@@ -299,17 +305,17 @@ export default function StudentLearningCreatorPage() {
         )}
 
         {loading && (
-          <div className="text-center text-white">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-foreground mb-4"></div>
             <h2 className="text-2xl font-bold">Crafting Your Chapter...</h2>
-            <p className="text-primary-foreground/80">
+            <p className="text-muted-foreground">
               This might take a moment.
             </p>
           </div>
         )}
 
         {error && (
-          <div className="mx-auto max-w-2xl bg-destructive/80 backdrop-blur-lg border border-red-500/50 rounded-2xl p-8 text-center text-destructive-foreground">
+          <div className="mx-auto max-w-2xl bg-destructive border border-destructive/50 rounded-2xl p-8 text-center text-destructive-foreground">
             <h2 className="text-2xl font-bold mb-2">An Error Occurred</h2>
             <p>{error}</p>
           </div>
@@ -347,13 +353,13 @@ export default function StudentLearningCreatorPage() {
                 {chapter.flashcards.map((card) => (
                   <div className="scene h-64" key={card.id} onClick={() => handleCardFlip(card.id)}>
                     <div className={`flashcard h-full w-full ${flippedCards[card.id] ? "is-flipped" : ""}`}>
-                      <div className="card-face card-face-front absolute h-full w-full rounded-2xl p-6 flex flex-col justify-center items-center text-center bg-card/60 backdrop-blur-lg border border-white/20 text-card-foreground">
+                      <div className="card-face card-face-front absolute h-full w-full rounded-2xl p-6 flex flex-col justify-center items-center text-center bg-card border border-border text-card-foreground" style={{ boxShadow: '0 4px 25px -5px rgba(66, 133, 244, 0.4)'}}>
                         <p className="text-lg font-semibold">{card.front}</p>
                         <small className="text-muted-foreground/70 mt-4 absolute bottom-4">
                           Click to flip
                         </small>
                       </div>
-                      <div className="card-face card-face-back absolute h-full w-full rounded-2xl p-6 flex flex-col justify-center items-center text-center bg-secondary/80 backdrop-blur-lg border border-white/20 text-secondary-foreground">
+                      <div className="card-face card-face-back absolute h-full w-full rounded-2xl p-6 flex flex-col justify-center items-center text-center bg-secondary border border-border text-secondary-foreground" style={{ boxShadow: '0 4px 25px -5px rgba(52, 168, 83, 0.4)'}}>
                         <p>{card.back}</p>
                       </div>
                     </div>
@@ -386,7 +392,7 @@ export default function StudentLearningCreatorPage() {
                 </div>
 
                 {/* Question Card */}
-                <div className="bg-card/60 backdrop-blur-lg border border-white/20 rounded-2xl p-8">
+                <div className="bg-card border border-border rounded-2xl p-8" style={{ boxShadow: '0 4px 25px -5px rgba(251, 188, 5, 0.4)'}}>
                   <p className="font-semibold text-xl mb-6 text-center">
                     {currentQuestion.question}
                   </p>
@@ -428,33 +434,18 @@ export default function StudentLearningCreatorPage() {
                         handleTheoryChange(currentQuestion.id, e.target.value)
                       }
                       placeholder="Your answer..."
-                      className="w-full p-3 bg-input/50 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-primary min-h-[120px]"
+                      className="w-full p-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-primary min-h-[120px]"
                     />
                   )}
                 </div>
 
                 {/* Navigation */}
                 <div className="flex justify-between items-center mt-8">
-                  <button
-                    onClick={() => setCurrentQuestionIndex((i) => i - 1)}
-                    disabled={currentQuestionIndex === 0}
-                    className="px-6 py-2 bg-muted text-muted-foreground rounded-lg disabled:opacity-50 hover:bg-muted/80 transition-colors"
-                  >
-                    Previous
-                  </button>
+                <button onClick={() => setCurrentQuestionIndex(i => i - 1)} disabled={currentQuestionIndex === 0} className={mutedButtonClasses}>Previous</button>
                   {currentQuestionIndex < chapter.questions.length - 1 ? (
-                    <button
-                      onClick={() => setCurrentQuestionIndex((i) => i + 1)}
-                      className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
-                    >
-                      Next
-                    </button>
+                    <button onClick={() => setCurrentQuestionIndex(i => i + 1)} className={primaryButtonClasses}>Next</button>
                   ) : (
-                    <button
-                      onClick={handleQuizSubmit}
-                      disabled={quizLoading}
-                      className="px-6 py-2 bg-secondary text-secondary-foreground font-semibold rounded-lg hover:bg-secondary/90 transition-colors"
-                    >
+                    <button onClick={handleQuizSubmit} disabled={quizLoading} className={`${secondaryButtonClasses} font-semibold`}>
                       {quizLoading ? "Evaluating..." : "Submit Quiz"}
                     </button>
                   )}
@@ -470,7 +461,7 @@ export default function StudentLearningCreatorPage() {
             {scorePercentage >= 80 && (
               <Confetti recycle={false} numberOfPieces={400} />
             )}
-            <div className="bg-card/60 backdrop-blur-lg border border-white/20 rounded-2xl p-8">
+            <div className="bg-card border border-border rounded-2xl p-8" style={{ boxShadow: '0 4px 25px -5px rgba(234, 67, 53, 0.4)'}}>
               {/* --- Dynamic Header --- */}
               <div className="text-center">
                 <h2 className="text-3xl font-bold mb-2">
@@ -567,7 +558,7 @@ export default function StudentLearningCreatorPage() {
                   <button
                     onClick={() => setReviewIndex((i) => i - 1)}
                     disabled={reviewIndex === 0}
-                    className="px-4 py-2 bg-muted text-muted-foreground rounded-lg disabled:opacity-50 hover:bg-muted/80 transition-colors text-sm"
+                    className={`${mutedButtonClasses} text-sm`}
                   >
                     Previous
                   </button>
@@ -580,7 +571,7 @@ export default function StudentLearningCreatorPage() {
                     disabled={
                       reviewIndex === finalFeedback.detailedReview.length - 1
                     }
-                    className="px-4 py-2 bg-muted text-muted-foreground rounded-lg disabled:opacity-50 hover:bg-muted/80 transition-colors text-sm"
+                    className={`${mutedButtonClasses} text-sm`}
                   >
                     Next
                   </button>
@@ -588,10 +579,7 @@ export default function StudentLearningCreatorPage() {
               </div>
 
               <div className="text-center mt-8">
-                <button
-                  onClick={() => window.location.reload()}
-                  className="px-6 py-2 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-colors"
-                >
+              <button onClick={() => window.location.reload()} className={`${primaryButtonClasses} font-semibold`}>
                   Create Another Chapter
                 </button>
               </div>
@@ -722,5 +710,5 @@ const LightbulbIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 const Loader2Icon = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
 );
