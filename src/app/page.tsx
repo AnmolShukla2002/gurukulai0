@@ -66,33 +66,17 @@ export default function LoginPage() {
 
   return (
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2">
-      <div className="relative hidden flex-col items-center justify-center overflow-hidden p-8 lg:flex animated-gradient">
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="relative z-10 text-center text-white">
-          <Image
-            src="/logo.png"
-            alt="Gurukul AI Logo"
-            width="150"
-            height="150"
-            className="mx-auto mb-6"
-            priority
-          />
-          <h1 className="text-5xl font-bold tracking-tight drop-shadow-lg">Gurukul AI</h1>
-          <p className="mt-4 text-xl text-primary-foreground/80 drop-shadow-md">
-            Your intelligent partner in modern education.
-          </p>
-          <div className="mt-12 h-16 text-center">
-            <p key={currentBenefit} className="text-2xl font-semibold animate-in fade-in-5 slide-in-from-bottom-5 duration-500">
-              {BENEFITS[currentBenefit]}
-            </p>
-          </div>
-        </div>
-        <div className="absolute bottom-8 left-8 right-8 z-10 flex items-center justify-center gap-8">
-            <figure className="text-center text-white">
-                <blockquote className="italic">"This has transformed my classroom prep."</blockquote>
-                <figcaption className="mt-2 text-sm text-primary-foreground/70">- Sarah J., High School Teacher</figcaption>
-            </figure>
-        </div>
+      <div
+        className="relative hidden flex-col items-center justify-center overflow-hidden p-8 lg:flex"
+        style={{
+          backgroundImage: 'url(/logo.png)',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: 'contain',
+        }}
+      >
+        <div className="absolute inset-0 bg-black/50" />
+
         <div className="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-2xl"></div>
         <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/10 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl"></div>
       </div>
